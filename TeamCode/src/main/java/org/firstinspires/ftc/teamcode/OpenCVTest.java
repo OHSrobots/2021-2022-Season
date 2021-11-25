@@ -69,14 +69,12 @@ public class OpenCVTest extends LinearOpMode {
     public static class SamplePipeline extends OpenCvPipeline {
         private static final Scalar BLUE = new Scalar(0, 0, 255);
 
-        private static final int THRESHOLD = 107;
-
-        Point topLeft = new Point(0, 150);
-        Point bottomRight = new Point(50, 200);
-        Point topLeft2 = new Point(125, 150);
-        Point bottomRight2 = new Point(175, 200);
-        Point topLeft3 = new Point(250, 150);
-        Point bottomRight3 = new Point(300, 200);
+        Point topLeft = new Point(0, 160);
+        Point bottomRight = new Point(50, 210);
+        Point topLeft2 = new Point(130, 150);
+        Point bottomRight2 = new Point(180, 200);
+        Point topLeft3 = new Point(265, 140);
+        Point bottomRight3 = new Point(315, 190);
 
         Mat region1_Y;
         Mat region1_Cr;
@@ -161,32 +159,32 @@ public class OpenCVTest extends LinearOpMode {
             Imgproc.rectangle(input, topLeft2, bottomRight2, BLUE, 2);
             Imgproc.rectangle(input, topLeft3, bottomRight3, BLUE, 2);
 
-            if (averageY > 30 && averageY < 130 && averageCr < 200 && averageCr > 100 && averageCb < 120) {
+            if (averageCb < 110) {
                 type1 = TYPE.DUCK;
-            } else if (averageY > 75 && averageY < 125 && averageCr < 150 && averageCr > 100 && averageCb > 100 && averageCb < 150) {
+            } else if (averageCb >130) {
                 type1 = TYPE.BLUESQUARE;
-            } else if (averageY < 130 && averageY > 30 && averageCr > 190 && averageCb < 140 && averageCb> 40) {
+            } else if (averageCr >135) {
                 type1 = TYPE.REDSQUARE;
             } else {
                 type1 = TYPE.NULL;
             }
 
-            if (averageY2 > 30 && averageY2 < 130 && averageCr2 < 200 && averageCr2 > 100 && averageCb2 < 120) {
+            if (averageCb2 < 110) {
                 type2 = TYPE.DUCK;
-            } else if (averageY2 > 75 && averageY2 < 125 && averageCr2 < 150 && averageCr2 > 100 && averageCb2 > 100 && averageCb2 < 150) {
+            } else if (averageCb2 >130) {
                 type2 = TYPE.BLUESQUARE;
-            } else if (averageY2 < 130 && averageY2 > 30 && averageCr2 > 190 && averageCb2 < 140 && averageCb2> 40) {
+            } else if (averageCr2 >135) {
                 type2 = TYPE.REDSQUARE;
             } else {
                 type2 = TYPE.NULL;
             }
 
 
-            if (averageY3 > 30 && averageY3 < 130 && averageCr3 < 200 && averageCr3 > 100 && averageCb3 < 120) {
+            if (averageCb3 < 110) {
                 type3 = TYPE.DUCK;
-            } else if (averageY3 > 75 && averageY3 < 125 && averageCr3 < 150 && averageCr3 > 100 && averageCb3 > 100 && averageCb3 < 150) {
+            } else if (averageCb3 >130) {
                 type3 = TYPE.BLUESQUARE;
-            } else if (averageY3 < 130 && averageY3 > 30 && averageCr3 > 190 && averageCb3 < 140 && averageCb3> 40) {
+            } else if (averageCr3 >135) {
                 type3 = TYPE.REDSQUARE;
             } else {
                 type3 = TYPE.NULL;
@@ -203,7 +201,7 @@ public class OpenCVTest extends LinearOpMode {
             return type2;
         }
         public TYPE getType3() {
-            return type2;
+            return type3;
         }
 
         public int getAverageY() {
