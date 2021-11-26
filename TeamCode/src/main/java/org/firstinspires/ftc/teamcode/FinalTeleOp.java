@@ -66,28 +66,23 @@ public class FinalTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if (gamepad1.left_stick_y != 0) {
-                leftFront.setPower(-gamepad1.left_stick_y);
-                rightFront.setPower(-gamepad1.left_stick_y);
-                leftBack.setPower(-gamepad1.left_stick_y);
-                rightBack.setPower(-gamepad1.left_stick_y);
-            } else if (gamepad1.left_bumper) {
-                leftFront.setPower(1);
-                leftBack.setPower(1);
-            }
-            else if (gamepad1.right_bumper) {
-                rightFront.setPower(1);
-                rightBack.setPower(1);
-            } else if (gamepad1.right_stick_x != 0) {
-                leftFront.setPower(gamepad1.right_stick_x);
-                rightFront.setPower(gamepad1.right_stick_x);
-                leftBack.setPower(-gamepad1.right_stick_x);
-                rightBack.setPower(-gamepad1.right_stick_x);
+            if (gamepad1.left_stick_y != 0 || gamepad1.right_stick_x != 0) {
+                leftFront.setPower(-gamepad1.left_stick_y + gamepad1.right_stick_x);
+                rightFront.setPower(-gamepad1.left_stick_y-gamepad1.right_stick_x);
+                leftBack.setPower(-gamepad1.left_stick_y+gamepad1.right_stick_x);
+                rightBack.setPower(-gamepad1.left_stick_y-gamepad1.right_stick_x);
             } else {
                 leftFront.setPower(0);
                 rightFront.setPower(0);
                 leftBack.setPower(0);
                 rightBack.setPower(0);
+            }
+            if (gamepad1.a) {
+                spinner.setPower(-0.55);
+            } else if (gamepad1.b) {
+                spinner.setPower(0.55);
+            } else {
+                spinner.setPower(0);
             }
 
             //Arm Raise and Lower
