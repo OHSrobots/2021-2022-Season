@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,19 +7,16 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -35,25 +29,24 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-import java.util.List;
 import java.util.Locale;
 
 @Autonomous(name = "FinalAuto", group = "comp")
 public class FinalAuto extends LinearOpMode {
 
     // Declaring Motors & Servos
-    private     DcMotorEx     leftFront;        //port 0
-    private     DcMotorEx     rightFront;       //port 1
-    private     DcMotorEx     leftBack;         //port 1
-    private     DcMotorEx     rightBack;        //port 3
-    private     DcMotor       spinner;
-    private     DcMotor       arm;
-    private     Servo       wrist;        //port 0
-    private     Servo       fingers;         //port 0
+    private DcMotorEx leftFront;        //port 0
+    private DcMotorEx rightFront;       //port 1
+    private DcMotorEx leftBack;         //port 1
+    private DcMotorEx rightBack;        //port 3
+    private DcMotor spinner;
+    private DcMotor arm;
+    private Servo wrist;        //port 0
+    private Servo fingers;         //port 0
 
     //Declaring Distance Sensor Variables
-    private DistanceSensor leftDistance;
-    private DistanceSensor rightDistance;
+    //private DistanceSensor leftDistance;
+    //private DistanceSensor rightDistance;
 
     //Declaring Color Sensor Variables
     NormalizedColorSensor lfColorSensor;
@@ -74,28 +67,39 @@ public class FinalAuto extends LinearOpMode {
     OpenCVTest.SamplePipeline pipeline;
 
     @Override
-
     public void runOpMode() {
         initialize();
-        if (opModeIsActive()) {
+
+        while (opModeIsActive()) {
             encoders("n");
 
             if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
                 //On Blue Side
 
-                if (rightDistance.getDistance(DistanceUnit.CM) < 80.00) {
+                if (true/*rightDistance.getDistance(DistanceUnit.CM) < 80.00*/) {
                     //Distance Sensor on Right < x
                     //On Carousel Side
 
                     if (pipeline.getType1().toString().equals("DUCK")) {
                         //Duck in Field 1
+                        telemetry.addData("Duck: ", "Field 1");
+                        telemetry.addData("Robot: ", "Blue Carousel");
+                        duckyData();
+
                     } else if (pipeline.getType2().toString().equals("DUCK")) {
                         //Duck in Field 2
+                        telemetry.addData("Duck: ", "Field 2");
+                        telemetry.addData("Robot: ", "Blue Carousel");
+                        duckyData();
+
                     } else if (pipeline.getType3().toString().equals("DUCK")) {
                         //Duck in Field 3
+                        telemetry.addData("Duck: ", "Field 3");
+                        telemetry.addData("Robot: ", "Blue Carousel");
+                        duckyData();
                     }
 
-                } else if (rightDistance.getDistance(DistanceUnit.CM) > 80.00) {
+                } else if (false) {
                     //Distance Sensor on Right > x
                     //On Storage Side
 
@@ -110,19 +114,30 @@ public class FinalAuto extends LinearOpMode {
 
             } else if (pipeline.getType1().toString().equals("REDSQUARE") || pipeline.getType2().toString().equals("REDSQUARE") || pipeline.getType3().toString().equals("REDSQUARE")) {
                 //On Red Side
-                if (leftDistance.getDistance(DistanceUnit.CM) < 80.00) {
+                if (true) {
                     //Distance Sensor on Left < x
                     //On Carousel Side
 
                     if (pipeline.getType1().toString().equals("DUCK")) {
                         //Duck in Field 1
+                        telemetry.addData("Duck: ", "Field 1");
+                        telemetry.addData("Robot: ", "Red Carousel");
+                        duckyData();
+
                     } else if (pipeline.getType2().toString().equals("DUCK")) {
                         //Duck in Field 2
+                        telemetry.addData("Duck: ", "Field 2");
+                        telemetry.addData("Robot: ", "Red Carousel");
+                        duckyData();
+
                     } else if (pipeline.getType3().toString().equals("DUCK")) {
                         //Duck in Field 3
+                        telemetry.addData("Duck: ", "Field 3");
+                        telemetry.addData("Robot: ", "Red Carousel");
+                        duckyData();
                     }
 
-                } else if (leftDistance.getDistance(DistanceUnit.CM) > 80.00) {
+                } else if (false) {
                     //Distance Sensor on Left > x
                     //On Storage Side
 
@@ -135,14 +150,35 @@ public class FinalAuto extends LinearOpMode {
                     }
                 }
             }
+            sleep(3000);
         }
     }
 
+    public void duckyData(){
+        telemetry.addLine();
+        telemetry.addLine();
+        telemetry.addData("Field 1", pipeline.getType1());
+        telemetry.addData("AverageY", pipeline.getAverageY());
+        telemetry.addData("AverageCr", pipeline.getAverageCr());
+        telemetry.addData("AverageCb", pipeline.getAverageCb());
+        telemetry.addLine();
+        telemetry.addData("Field 2", pipeline.getType2());
+        telemetry.addData("AverageY", pipeline.getAverageY2());
+        telemetry.addData("AverageCr", pipeline.getAverageCr2());
+        telemetry.addData("AverageCb", pipeline.getAverageCb2());
+        telemetry.addLine();
+        telemetry.addData("Field 3", pipeline.getType3());
+        telemetry.addData("AverageY", pipeline.getAverageY3());
+        telemetry.addData("AverageCr", pipeline.getAverageCr3());
+        telemetry.addData("AverageCb", pipeline.getAverageCb3());
+
+        telemetry.update();
+    }
     String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
-    String formatDegrees(double degrees){
+    String formatDegrees(double degrees) {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
@@ -182,12 +218,12 @@ public class FinalAuto extends LinearOpMode {
             double P = Math.abs(0.025 * heading);
             //If-Else-If Statement to Drive Forward in a Straight Line
             if (speed > 0) {
-                if (heading < -0.1  && heading > -90){
+                if (heading < -0.1 && heading > -90) {
                     leftFront.setPower(speed + P);
                     leftBack.setPower(speed + P);
                     rightFront.setPower(speed - P);
                     rightBack.setPower(speed - P);
-                }else if (heading > 0.1 && heading < 90){
+                } else if (heading > 0.1 && heading < 90) {
                     leftFront.setPower(speed - P);
                     leftBack.setPower(speed - P);
                     rightFront.setPower(speed + P);
@@ -200,12 +236,12 @@ public class FinalAuto extends LinearOpMode {
                 }
             } else if (speed < 0) {
                 //May need to switch the positives and negatives if gyro seems not too work
-                if (heading < -0.1  && heading > -90){
+                if (heading < -0.1 && heading > -90) {
                     leftFront.setPower(speed + P);
                     leftBack.setPower(speed + P);
                     rightFront.setPower(speed - P);
                     rightBack.setPower(speed - P);
-                }else if (heading > 0.1 && heading < 90){
+                } else if (heading > 0.1 && heading < 90) {
                     leftFront.setPower(speed - P);
                     leftBack.setPower(speed - P);
                     rightFront.setPower(speed + P);
@@ -299,7 +335,7 @@ public class FinalAuto extends LinearOpMode {
 
         encoders("on");
 
-        double calcPosition = distance * (100* 280/(16.9646003294*4 *8.8 * 1.0555555556));
+        double calcPosition = distance * (100 * 280 / (16.9646003294 * 4 * 8.8 * 1.0555555556));
         int setPosition = (int) Math.round(calcPosition);
 
         int setVelocity = (int) Math.round(velocity);
@@ -374,10 +410,12 @@ public class FinalAuto extends LinearOpMode {
             Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
             Core.extractChannel(YCrCb, Y, 0);
         }
+
         private void inputToCr(Mat input) {
             Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
             Core.extractChannel(YCrCb, Cr, 1);
         }
+
         private void inputToCb(Mat input) {
             Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
             Core.extractChannel(YCrCb, Cb, 2);
@@ -426,32 +464,32 @@ public class FinalAuto extends LinearOpMode {
             Imgproc.rectangle(input, topLeft2, bottomRight2, BLUE, 2);
             Imgproc.rectangle(input, topLeft3, bottomRight3, BLUE, 2);
 
-            if (averageCb < 110) {
+            if (averageCb < 120 && averageCr < 150) {
                 type1 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb >130) {
+            } else if (averageCb >= 120) {
                 type1 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr >135) {
+            } else if (averageCr >= 150) {
                 type1 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
             } else {
                 type1 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-            if (averageCb2 < 110) {
+            if (averageCb2 < 120 && averageCr2 < 150) {
                 type2 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb2 >130) {
+            } else if (averageCb2 >= 120) {
                 type2 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr2 >135) {
+            } else if (averageCr2 >= 150) {
                 type2 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
             } else {
                 type2 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
 
-            if (averageCb3 < 110) {
+            if (averageCb3 < 120 && averageCr3 < 150) {
                 type3 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb3 >130) {
+            } else if (averageCb3 >= 120) {
                 type3 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr3 >135) {
+            } else if (averageCr3 >= 150) {
                 type3 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
             } else {
                 type3 = OpenCVTest.SamplePipeline.TYPE.NULL;
@@ -464,9 +502,11 @@ public class FinalAuto extends LinearOpMode {
         public OpenCVTest.SamplePipeline.TYPE getType1() {
             return type1;
         }
+
         public OpenCVTest.SamplePipeline.TYPE getType2() {
             return type2;
         }
+
         public OpenCVTest.SamplePipeline.TYPE getType3() {
             return type3;
         }
@@ -474,27 +514,35 @@ public class FinalAuto extends LinearOpMode {
         public int getAverageY() {
             return averageY;
         }
+
         public int getAverageCr() {
             return averageCr;
         }
+
         public int getAverageCb() {
             return averageCb;
         }
+
         public int getAverageY2() {
             return averageY2;
         }
+
         public int getAverageCr2() {
             return averageCr2;
         }
+
         public int getAverageCb2() {
             return averageCb2;
         }
+
         public int getAverageY3() {
             return averageY3;
         }
+
         public int getAverageCr3() {
             return averageCr3;
         }
+
         public int getAverageCb3() {
             return averageCb3;
         }
@@ -526,8 +574,8 @@ public class FinalAuto extends LinearOpMode {
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);     //Reverse
 
         //Mapping Distance Sensors
-        leftDistance = hardwareMap.get(DistanceSensor.class, "leftDistance");
-        rightDistance = hardwareMap.get(DistanceSensor.class, "rightDistance");
+        //leftDistance = hardwareMap.get(DistanceSensor.class, "leftDistance");
+        //rightDistance = hardwareMap.get(DistanceSensor.class, "rightDistance");
 
         //Mapping Color Sensors
         lfColorSensor = hardwareMap.get(NormalizedColorSensor.class, "lfColorSensor");
@@ -582,5 +630,5 @@ public class FinalAuto extends LinearOpMode {
         //Waiting for start via Player
         waitForStart();
     }
-
 }
+

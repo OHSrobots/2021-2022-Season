@@ -159,32 +159,32 @@ public class OpenCVTest extends LinearOpMode {
             Imgproc.rectangle(input, topLeft2, bottomRight2, BLUE, 2);
             Imgproc.rectangle(input, topLeft3, bottomRight3, BLUE, 2);
 
-            if (averageCb < 110) {
+            if (averageCb < 120 && averageCr < 150) {
                 type1 = TYPE.DUCK;
-            } else if (averageCb >130) {
+            } else if (averageCb >= 120) {
                 type1 = TYPE.BLUESQUARE;
-            } else if (averageCr >135) {
+            } else if (averageCr >= 150) {
                 type1 = TYPE.REDSQUARE;
             } else {
                 type1 = TYPE.NULL;
             }
 
-            if (averageCb2 < 110) {
+            if (averageCb2 < 120 && averageCr2 < 150) {
                 type2 = TYPE.DUCK;
-            } else if (averageCb2 >130) {
+            } else if (averageCb2 >= 120) {
                 type2 = TYPE.BLUESQUARE;
-            } else if (averageCr2 >135) {
+            } else if (averageCr2 >= 150) {
                 type2 = TYPE.REDSQUARE;
             } else {
                 type2 = TYPE.NULL;
             }
 
 
-            if (averageCb3 < 110) {
+            if (averageCb3 < 120 && averageCr3 < 150) {
                 type3 = TYPE.DUCK;
-            } else if (averageCb3 >130) {
+            } else if (averageCb3 >= 120) {
                 type3 = TYPE.BLUESQUARE;
-            } else if (averageCr3 >135) {
+            } else if (averageCr3 >= 150) {
                 type3 = TYPE.REDSQUARE;
             } else {
                 type3 = TYPE.NULL;
