@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -7,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -45,13 +48,14 @@ public class FinalAuto extends LinearOpMode {
     private Servo fingers;         //port 0
 
     //Declaring Distance Sensor Variables
-    //private DistanceSensor leftDistance;
-    //private DistanceSensor rightDistance;
+    private DistanceSensor leftDistance;
+    private DistanceSensor rightDistance;
 
     //Declaring Color Sensor Variables
     NormalizedColorSensor lfColorSensor;
     NormalizedColorSensor rfColorSensor;
     NormalizedRGBA colors;
+    NormalizedRGBA colors2;
     boolean foundRed = false;
     boolean foundWhite = false;
 
@@ -85,6 +89,9 @@ public class FinalAuto extends LinearOpMode {
                         telemetry.addData("Duck: ", "Field 1");
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
+
+                        //Color Sensor
+                        senseLine("red", 0.4);
 
                     } else if (pipeline.getType2().toString().equals("DUCK")) {
                         //Duck in Field 2
@@ -204,6 +211,7 @@ public class FinalAuto extends LinearOpMode {
     //Method to Find & Move to a White, Red, or Blue Line
     void senseLine(String color, double speed) {
         final float[] hsvValues = new float[3];
+        final float[] hsvValues2 = new float[3];
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         foundRed = false;
         foundWhite = false;
@@ -214,6 +222,10 @@ public class FinalAuto extends LinearOpMode {
         while ((!foundRed && !foundWhite) && opModeIsActive()) {
             //Needed (updating) Variables
             NormalizedRGBA colors = lfColorSensor.getNormalizedColors();
+            NormalizedRGBA colors2 = rfColorSensor.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            Color.colorToHSV(colors2.toColor(), hsvValues2);
+
             double heading = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle));
             double P = Math.abs(0.025 * heading);
             //If-Else-If Statement to Drive Forward in a Straight Line
@@ -254,14 +266,33 @@ public class FinalAuto extends LinearOpMode {
                 }
             }
 
+            telemetry.addLine()
+                    .addData("Red", "%.3f", (double) colors.red * 1000)
+                    .addData("Green", "%.3f", colors.green * 1000)
+                    .addData("Blue", "%.3f", colors.blue * 1000);
+            telemetry.addLine()
+                    .addData("Hue", "%.3f", hsvValues[0])
+                    .addData("Saturation", "%.3f", hsvValues[1])
+                    .addData("Value", "%.3f", hsvValues[2]);
+            telemetry.addData("Alpha", "%.3f", colors.alpha);
+
+            telemetry.addLine()
+                    .addData("Red2", "%.3f", colors2.red * 1000)
+                    .addData("Green2", "%.3f", colors2.green * 1000)
+                    .addData("Blue2", "%.3f", colors2.blue * 1000);
+            telemetry.addLine()
+                    .addData("Hue2", "%.3f", hsvValues2[0])
+                    .addData("Saturation2", "%.3f", hsvValues2[1])
+                    .addData("Value2", "%.3f", hsvValues2[2]);
+            telemetry.addData("Alpha2", "%.3f", colors2.alpha);
             //Telemetry Info for Diagnostics
             telemetry.addLine()
-                    .addData("Alpha Output", "%.3f", colors.alpha)
                     .addData("Heading Output", "%.3f", heading)
                     .addData("Loop Count", countRed);
+
             telemetry.update();
 
-            if (color.equals("red")) {
+            /*if (color.equals("red")) {
                 //If Statement to Detect the Red Line and Break the Loop
                 if (colors.alpha < 0.2) {
                     forceStop();
@@ -274,7 +305,7 @@ public class FinalAuto extends LinearOpMode {
                     foundWhite = true;
                 }
                 countWhite++;
-            }
+            }*/
         }
     }
 
@@ -574,8 +605,8 @@ public class FinalAuto extends LinearOpMode {
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);     //Reverse
 
         //Mapping Distance Sensors
-        //leftDistance = hardwareMap.get(DistanceSensor.class, "leftDistance");
-        //rightDistance = hardwareMap.get(DistanceSensor.class, "rightDistance");
+        leftDistance = hardwareMap.get(DistanceSensor.class, "leftDistance");
+        rightDistance = hardwareMap.get(DistanceSensor.class, "rightDistance");
 
         //Mapping Color Sensors
         lfColorSensor = hardwareMap.get(NormalizedColorSensor.class, "lfColorSensor");
