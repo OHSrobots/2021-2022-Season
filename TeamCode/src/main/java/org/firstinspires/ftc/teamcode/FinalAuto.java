@@ -77,14 +77,16 @@ public class FinalAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
             encoders("off");
-
+            moveInches(5000,500);
+            /*
             if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
                 //On Blue Side
-
-                if (true/*rightDistance.getDistance(DistanceUnit.CM) < 80.00*/) {
-                    //Distance Sensor on Right < x
-                    //On Carousel Side
-
+             /*
+                if (rightDistance.getDistance(DistanceUnit.IN) < 24.00){
+             */
+                //Distance Sensor on Right < x
+                //On Carousel Side
+/*
                     if (pipeline.getType1().toString().equals("DUCK")) {
                         //Duck in Field 1
                         telemetry.addData("Duck: ", "Field 1");
@@ -160,11 +162,11 @@ public class FinalAuto extends LinearOpMode {
                     } else if (pipeline.getType3().toString().equals("DUCK")) {
                         //Duck in Field 3
                     }
-                }
+                }*/
             }
-            sleep(3000);
+            sleep(10000);
         }
-    }
+
 
     public void duckyData() {
         telemetry.addLine();
@@ -409,31 +411,37 @@ public class FinalAuto extends LinearOpMode {
 
     //Method to Move Robot Using Encoders
     void moveInches(double distance, double velocity) {
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         encoders("on");
 
-        double calcPosition = distance * (100 * 280 / (16.9646003294 * 4 * 8.8 * 1.0555555556));
+
+        double calcPosition = distance /* (100 * 280 / (16.9646003294 * 4 * 8.8 * 1.0555555556))*/;
         int setPosition = (int) Math.round(calcPosition);
 
         int setVelocity = (int) Math.round(velocity);
 
         leftFront.setTargetPosition(setPosition);
         rightFront.setTargetPosition(setPosition);
-        leftBack.setTargetPosition(setPosition);
-        rightBack.setTargetPosition(setPosition);
-
-        leftFront.setVelocity(setVelocity);
-        rightFront.setVelocity(setVelocity);
-        leftBack.setVelocity(setVelocity);
-        rightBack.setVelocity(setVelocity);
+        //leftBack.setTargetPosition(setPosition-200);
+        //rightBack.setTargetPosition(setPosition);
 
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        leftFront.setVelocity(setVelocity);
+        rightFront.setVelocity(setVelocity);
+        //leftBack.setVelocity(0);
+        //rightBack.setVelocity(0);
 
         while (opModeIsActive() && leftFront.isBusy()) {
             telemetry.addData("position", leftFront.getCurrentPosition());
+            telemetry.addData("position", rightFront.getCurrentPosition());
+            telemetry.addData("position", leftBack.getCurrentPosition());
+            telemetry.addData("position", rightBack.getCurrentPosition());
             telemetry.addData("is at target", !leftFront.isBusy());
             telemetry.update();
         }
