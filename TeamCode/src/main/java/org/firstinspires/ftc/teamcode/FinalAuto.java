@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
+import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -63,7 +64,7 @@ public class FinalAuto extends LinearOpMode {
     BNO055IMU imu;
     Orientation angles;
     Acceleration gravity;
-    double heading;
+    double initialHeading;
     boolean turned = false;
 
     //Declaring Camera Variables
@@ -75,7 +76,7 @@ public class FinalAuto extends LinearOpMode {
         initialize();
 
         while (opModeIsActive()) {
-            encoders("n");
+            encoders("off");
 
             if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
                 //On Blue Side
@@ -91,7 +92,11 @@ public class FinalAuto extends LinearOpMode {
                         duckyData();
 
                         //Color Sensor
-                        senseLine("red", 0.4);
+                        senseLine("blue", 0.25);
+                        turn(0.4, 0);
+                        turn(0.4, 180);
+                        turn(0.4, 0);
+                        turn(0.4, -180);
 
                     } else if (pipeline.getType2().toString().equals("DUCK")) {
                         //Duck in Field 2
@@ -161,7 +166,7 @@ public class FinalAuto extends LinearOpMode {
         }
     }
 
-    public void duckyData(){
+    public void duckyData() {
         telemetry.addLine();
         telemetry.addLine();
         telemetry.addData("Field 1", pipeline.getType1());
@@ -181,11 +186,12 @@ public class FinalAuto extends LinearOpMode {
 
         telemetry.update();
     }
+
     String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
-    String formatDegrees(double degrees) {
+    String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 
@@ -208,83 +214,113 @@ public class FinalAuto extends LinearOpMode {
         sleep(dur);
     }
 
+    double getBlueRedRatio(double ratio){
+        return ratio;
+    }
+    double getBlueRedRatio2(double ratio2){
+        return ratio2;
+    }
+
     //Method to Find & Move to a White, Red, or Blue Line
     void senseLine(String color, double speed) {
         final float[] hsvValues = new float[3];
         final float[] hsvValues2 = new float[3];
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double initialHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
         foundRed = false;
         foundWhite = false;
         int countRed = 0;
         int countWhite = 0;
+        boolean shouldBreak = false;
 
         //If the "foundRed" Boolean is False, Run Loop
-        while ((!foundRed && !foundWhite) && opModeIsActive()) {
+        while ((!shouldBreak) && opModeIsActive()) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             //Needed (updating) Variables
             NormalizedRGBA colors = lfColorSensor.getNormalizedColors();
             NormalizedRGBA colors2 = rfColorSensor.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             Color.colorToHSV(colors2.toColor(), hsvValues2);
 
-            double heading = Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle));
+            double heading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)) - initialHeading;
             double P = Math.abs(0.025 * heading);
-            //If-Else-If Statement to Drive Forward in a Straight Line
-            if (speed > 0) {
+
+            //If-Else-If Statement to Drive Forward or Backwards in a Straight Line
                 if (heading < -0.1 && heading > -90) {
-                    leftFront.setPower(speed + P);
-                    leftBack.setPower(speed + P);
-                    rightFront.setPower(speed - P);
-                    rightBack.setPower(speed - P);
-                } else if (heading > 0.1 && heading < 90) {
                     leftFront.setPower(speed - P);
                     leftBack.setPower(speed - P);
                     rightFront.setPower(speed + P);
                     rightBack.setPower(speed + P);
+                } else if (heading > 0.1 && heading < 90) {
+                    leftFront.setPower(speed + P);
+                    leftBack.setPower(speed + P);
+                    rightFront.setPower(speed - P);
+                    rightBack.setPower(speed - P);
                 } else {
                     leftFront.setPower(speed);
                     leftBack.setPower(speed);
                     rightFront.setPower(speed);
                     rightBack.setPower(speed);
                 }
-            } else if (speed < 0) {
-                //May need to switch the positives and negatives if gyro seems not too work
-                if (heading < -0.1 && heading > -90) {
-                    leftFront.setPower(speed + P);
-                    leftBack.setPower(speed + P);
-                    rightFront.setPower(speed - P);
-                    rightBack.setPower(speed - P);
-                } else if (heading > 0.1 && heading < 90) {
-                    leftFront.setPower(speed - P);
-                    leftBack.setPower(speed - P);
-                    rightFront.setPower(speed + P);
-                    rightBack.setPower(speed + P);
-                } else {
-                    leftFront.setPower(speed);
-                    leftBack.setPower(speed);
-                    rightFront.setPower(speed);
-                    rightBack.setPower(speed);
+
+            double BlueRedRatio = colors.blue / colors.red;
+            double BlueRedRatio2 = colors2.blue / colors2.red;
+
+            if ((BlueRedRatio < 0.83 || BlueRedRatio > 2.032)) {
+                telemetry.addLine("lfColorSensor says:");
+                if (BlueRedRatio <= 0.83 && (color.equals("red") || color.equals("Red"))) {
+                    telemetry.addLine("Red Line Has Been Found! :)");
+                    shouldBreak = true;
+                } else if ((BlueRedRatio >= 2.032) && (color.equals("blue") || color.equals("Blue"))) {
+                    telemetry.addLine("Blue Line Has Been Found! :)");
+                    shouldBreak = true;
                 }
+            } else if ((colors.green * 1000 >= 9.041) && (color.equals("white") || color.equals("White"))) {
+                telemetry.addLine("lfColorSensor says:");
+                telemetry.addLine("White Line Has Been Found! :)");
+                shouldBreak = true;
+            } else{
+                telemetry.addLine("lfColorSensor says:");
+                telemetry.addLine("Just Gray Tile :(");
+            }
+            telemetry.addLine();
+
+            if (BlueRedRatio2 < 0.83 || BlueRedRatio2 > 2.032) {
+                telemetry.addLine("rfColorSensor says:");
+                if (BlueRedRatio2 <= 0.83 && (color.equals("red") || color.equals("red"))) {
+                    telemetry.addLine("Red Line Has Been Found! :)");
+                } else if (BlueRedRatio2 >= 2.032 && (color.equals("blue") || color.equals("Blue"))) {
+                    telemetry.addLine("Blue Line Has Been Found! :)");
+                }
+            } else if (colors2.green * 1000 >= 9.041 && (color.equals("white") || color.equals("White"))) {
+                telemetry.addLine("rfColorSensor says:");
+                telemetry.addLine("White Line Has Been Found! :)");
+            } else{
+                telemetry.addLine("rfColorSensor says:");
+                telemetry.addLine("Just Gray Tile :(");
             }
 
+            telemetry.addLine();
+            telemetry.addLine();
+
+            telemetry.addLine("lfColorSensor: ");
             telemetry.addLine()
-                    .addData("Red", "%.3f", (double) colors.red * 1000)
+                    .addData("Red", "%.3f", colors.red * 1000)
                     .addData("Green", "%.3f", colors.green * 1000)
                     .addData("Blue", "%.3f", colors.blue * 1000);
-            telemetry.addLine()
-                    .addData("Hue", "%.3f", hsvValues[0])
-                    .addData("Saturation", "%.3f", hsvValues[1])
-                    .addData("Value", "%.3f", hsvValues[2]);
-            telemetry.addData("Alpha", "%.3f", colors.alpha);
+            telemetry.addData("Blue/Red Ratio: ", Math.floor(getBlueRedRatio(BlueRedRatio)*1000)/1000);
 
+            telemetry.addLine();
+
+            telemetry.addLine("rfColorSensor: ");
             telemetry.addLine()
-                    .addData("Red2", "%.3f", colors2.red * 1000)
-                    .addData("Green2", "%.3f", colors2.green * 1000)
-                    .addData("Blue2", "%.3f", colors2.blue * 1000);
-            telemetry.addLine()
-                    .addData("Hue2", "%.3f", hsvValues2[0])
-                    .addData("Saturation2", "%.3f", hsvValues2[1])
-                    .addData("Value2", "%.3f", hsvValues2[2]);
-            telemetry.addData("Alpha2", "%.3f", colors2.alpha);
+                    .addData("Red", "%.3f", colors2.red * 1000)
+                    .addData("Green", "%.3f", colors2.green * 1000)
+                    .addData("Blue", "%.3f", colors2.blue * 1000);
+            telemetry.addData("Blue/Red Ratio: ", Math.floor(getBlueRedRatio2(BlueRedRatio2) * 1000)/1000);
+
+            telemetry.addLine();
+
             //Telemetry Info for Diagnostics
             telemetry.addLine()
                     .addData("Heading Output", "%.3f", heading)
@@ -292,46 +328,56 @@ public class FinalAuto extends LinearOpMode {
 
             telemetry.update();
 
-            /*if (color.equals("red")) {
-                //If Statement to Detect the Red Line and Break the Loop
-                if (colors.alpha < 0.2) {
-                    forceStop();
-                    foundRed = true;
-                }
-                countRed++;
-            } else if (color.equals("white")) {
-                if (colors.alpha > 0.5) {
-                    forceStop();
-                    foundWhite = true;
-                }
-                countWhite++;
-            }*/
         }
+        rightFront.setPower(0);
+        leftFront.setPower(0);
+        rightBack.setPower(0);
+        leftBack.setPower(0);
     }
+
 
     //Method to Turn Robot Using IMU
     void turn(double speed, int angleMeasure) {
         turned = false;
         while (opModeIsActive() && !turned) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double heading = Math.abs(Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle)));
+            double startHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
 
-            telemetry.addData("heading", heading);
+            telemetry.addData("heading", startHeading);
             telemetry.update();
+            if (angleMeasure - startHeading >= 0) {
+                //turn left
+                if (startHeading <= angleMeasure + 1 && startHeading >= angleMeasure - 1) {
+                    forceStop();
+                    turned = true;
+                } else if (startHeading >= (0.9 * angleMeasure) && startHeading < (angleMeasure - 1)) {
+                    rightFront.setPower(0.5 * speed);
+                    leftFront.setPower(0.5 * -speed);
+                    rightBack.setPower(0.5 * speed);
+                    leftBack.setPower(0.5 * -speed);
+                } else {
+                    rightFront.setPower(speed);
+                    leftFront.setPower(-speed);
+                    rightBack.setPower(speed);
+                    leftBack.setPower(-speed);
+                }
 
-            if (heading <= angleMeasure + 1 && heading >= angleMeasure - 1) {
-                forceStop();
-                turned = true;
-            } else if (heading >= (0.9 * angleMeasure) && heading < (angleMeasure - 1)) {
-                rightFront.setPower(0.5 * speed);
-                leftFront.setPower(0.5 * -speed);
-                rightBack.setPower(0.5 * speed);
-                leftBack.setPower(0.5 * -speed);
-            } else {
-                rightFront.setPower(speed);
-                leftFront.setPower(-speed);
-                rightBack.setPower(speed);
-                leftBack.setPower(-speed);
+            } else if (angleMeasure - startHeading <= 0 ) {
+                //turn right
+                if (startHeading <= angleMeasure + 1 && startHeading >= angleMeasure - 1) {
+                    forceStop();
+                    turned = true;
+                } else if (startHeading >= (0.9 * angleMeasure) && startHeading < (angleMeasure - 1)) {
+                    rightFront.setPower(0.5 * -speed);
+                    leftFront.setPower(0.5 * speed);
+                    rightBack.setPower(0.5 * -speed);
+                    leftBack.setPower(0.5 * speed);
+                } else {
+                    rightFront.setPower(-speed);
+                    leftFront.setPower(speed);
+                    rightBack.setPower(-speed);
+                    leftBack.setPower(speed);
+                }
             }
         }
     }
