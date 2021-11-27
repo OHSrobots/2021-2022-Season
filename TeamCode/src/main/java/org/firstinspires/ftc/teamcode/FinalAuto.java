@@ -64,7 +64,7 @@ public class FinalAuto extends LinearOpMode {
     BNO055IMU imu;
     Orientation angles;
     Acceleration gravity;
-    double initialHeading;
+    double cumulativeHeading;
     boolean turned = false;
 
     //Declaring Camera Variables
@@ -77,7 +77,15 @@ public class FinalAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
             encoders("off");
-            moveInches(5000,500);
+            moveInches(24,12);
+            turn(0.4,90,0.5);
+            moveInches(24,12);
+            turn(0.4,180,0.5);
+            moveInches(24,12);
+            turn(0.4,-90,0.5);
+            moveInches(24,12);
+            turn(0.4,0,0.5);
+            sleep(20000);
             /*
             if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
                 //On Blue Side
@@ -164,7 +172,6 @@ public class FinalAuto extends LinearOpMode {
                     }
                 }*/
             }
-            sleep(10000);
         }
 
 
@@ -339,47 +346,87 @@ public class FinalAuto extends LinearOpMode {
 
 
     //Method to Turn Robot Using IMU
-    void turn(double speed, int angleMeasure) {
+    void turn(double speed, double angleMeasure, double tolerance) {
+        double startHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
+        boolean turnLeft = (((angleMeasure - startHeading) >= 0) && (startHeading >= 0)) || (((angleMeasure - startHeading) <= 0) && (startHeading < 0)) ;
+        boolean turnRight = (((angleMeasure - startHeading) <= 0) && (startHeading <= 0)) || (((angleMeasure - startHeading) >= 0) && (startHeading > 0));
         turned = false;
+
         while (opModeIsActive() && !turned) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double startHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
-
+            startHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
             telemetry.addData("heading", startHeading);
             telemetry.update();
-            if (angleMeasure - startHeading >= 0) {
+            if (turnLeft) {
                 //turn left
-                if (startHeading <= angleMeasure + 1 && startHeading >= angleMeasure - 1) {
-                    forceStop();
-                    turned = true;
-                } else if (startHeading >= (0.9 * angleMeasure) && startHeading < (angleMeasure - 1)) {
-                    rightFront.setPower(0.5 * speed);
-                    leftFront.setPower(0.5 * -speed);
-                    rightBack.setPower(0.5 * speed);
-                    leftBack.setPower(0.5 * -speed);
-                } else {
-                    rightFront.setPower(speed);
-                    leftFront.setPower(-speed);
-                    rightBack.setPower(speed);
-                    leftBack.setPower(-speed);
+                if (startHeading >= 0) {
+                    if (startHeading <= angleMeasure + tolerance && startHeading >= angleMeasure - tolerance) {
+                        forceStop();
+                        turned = true;
+                    } else if (startHeading >= (0.9 * angleMeasure) && startHeading < (angleMeasure - tolerance)) {
+                        rightFront.setPower(0.5 * speed);
+                        leftFront.setPower(0.5 * -speed);
+                        rightBack.setPower(0.5 * speed);
+                        leftBack.setPower(0.5 * -speed);
+                    } else {
+                        rightFront.setPower(speed);
+                        leftFront.setPower(-speed);
+                        rightBack.setPower(speed);
+                        leftBack.setPower(-speed);
+                    }
+                }
+                else {
+                    if ((startHeading <= (angleMeasure + tolerance)) && (startHeading >= (angleMeasure - tolerance))) {
+                        forceStop();
+                        turned = true;
+                    } else if (startHeading >= (0.9 * angleMeasure) && startHeading > (angleMeasure - tolerance)) {
+                        rightFront.setPower(0.5 * speed);
+                        leftFront.setPower(0.5 * -speed);
+                        rightBack.setPower(0.5 * speed);
+                        leftBack.setPower(0.5 * -speed);
+                    } else {
+                        rightFront.setPower(speed);
+                        leftFront.setPower(-speed);
+                        rightBack.setPower(speed);
+                        leftBack.setPower(-speed);
+                    }
                 }
 
-            } else if (angleMeasure - startHeading <= 0 ) {
+
+            } else if (turnRight) {
                 //turn right
-                if (startHeading <= angleMeasure + 1 && startHeading >= angleMeasure - 1) {
-                    forceStop();
-                    turned = true;
-                } else if (startHeading >= (0.9 * angleMeasure) && startHeading < (angleMeasure - 1)) {
-                    rightFront.setPower(0.5 * -speed);
-                    leftFront.setPower(0.5 * speed);
-                    rightBack.setPower(0.5 * -speed);
-                    leftBack.setPower(0.5 * speed);
+                if (startHeading <= 0) {
+                    if ((startHeading <= (angleMeasure + tolerance)) && (startHeading >= (angleMeasure - tolerance))) {
+                        forceStop();
+                        turned = true;
+                    } else if (startHeading >= (0.9 * angleMeasure) && startHeading < (angleMeasure - tolerance)) {
+                        rightFront.setPower(0.5 * -speed);
+                        leftFront.setPower(0.5 * speed);
+                        rightBack.setPower(0.5 * -speed);
+                        leftBack.setPower(0.5 * speed);
+                    } else {
+                        rightFront.setPower(-speed);
+                        leftFront.setPower(speed);
+                        rightBack.setPower(-speed);
+                        leftBack.setPower(speed);
+                    }
                 } else {
-                    rightFront.setPower(-speed);
-                    leftFront.setPower(speed);
-                    rightBack.setPower(-speed);
-                    leftBack.setPower(speed);
+                    if (startHeading <= angleMeasure + tolerance && startHeading >= angleMeasure - tolerance) {
+                        forceStop();
+                        turned = true;
+                    } else if (startHeading >= (0.9 * angleMeasure) && startHeading < (angleMeasure - tolerance)) {
+                        rightFront.setPower(0.5 * -speed);
+                        leftFront.setPower(0.5 * speed);
+                        rightBack.setPower(0.5 * -speed);
+                        leftBack.setPower(0.5 * speed);
+                    } else {
+                        rightFront.setPower(-speed);
+                        leftFront.setPower(speed);
+                        rightBack.setPower(-speed);
+                        leftBack.setPower(speed);
+                    }
                 }
+
             }
         }
     }
@@ -411,33 +458,33 @@ public class FinalAuto extends LinearOpMode {
 
     //Method to Move Robot Using Encoders
     void moveInches(double distance, double velocity) {
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         encoders("on");
 
-
-        double calcPosition = distance /* (100 * 280 / (16.9646003294 * 4 * 8.8 * 1.0555555556))*/;
+        double calcPosition = distance * 100.531;
         int setPosition = (int) Math.round(calcPosition);
 
-        int setVelocity = (int) Math.round(velocity);
+        double calcVelocity = velocity * 100.531;
+        int setVelocity = (int) Math.round(calcVelocity);
 
         leftFront.setTargetPosition(setPosition);
         rightFront.setTargetPosition(setPosition);
-        //leftBack.setTargetPosition(setPosition-200);
-        //rightBack.setTargetPosition(setPosition);
+        leftBack.setTargetPosition(setPosition);
+        rightBack.setTargetPosition(setPosition);
 
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         leftFront.setVelocity(setVelocity);
         rightFront.setVelocity(setVelocity);
-        //leftBack.setVelocity(0);
-        //rightBack.setVelocity(0);
+        leftBack.setVelocity(setVelocity);
+        rightBack.setVelocity(setVelocity);
 
-        while (opModeIsActive() && leftFront.isBusy()) {
+
+        while (opModeIsActive() && leftFront.isBusy() && rightFront.isBusy() ) {
+
             telemetry.addData("position", leftFront.getCurrentPosition());
             telemetry.addData("position", rightFront.getCurrentPosition());
             telemetry.addData("position", leftBack.getCurrentPosition());
@@ -682,6 +729,8 @@ public class FinalAuto extends LinearOpMode {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
 
         //Initialize Camera
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
