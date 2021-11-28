@@ -43,8 +43,8 @@ public class FinalAuto extends LinearOpMode {
     private DcMotorEx rightFront;       //port 1
     private DcMotorEx leftBack;         //port 1
     private DcMotorEx rightBack;        //port 3
-    private DcMotor spinner;
-    private DcMotor arm;
+    private DcMotorEx spinner;
+    private DcMotorEx arm;
     private Servo wrist;        //port 0
     private Servo fingers;         //port 0
 
@@ -77,36 +77,47 @@ public class FinalAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
             encoders("off");
-            moveInches(24,12);
-            turn(0.4,90,0.5);
-            moveInches(24,12);
-            turn(0.4,180,0.5);
-            moveInches(24,12);
-            turn(0.4,-90,0.5);
-            moveInches(24,12);
-            turn(0.4,0,0.5);
-            sleep(20000);
-            /*
+            wrist.setPosition(-0.25);
+            sleep(3);
+            fingers.setPosition(0.2);
+
+/*
             if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
                 //On Blue Side
-             /*
-                if (rightDistance.getDistance(DistanceUnit.IN) < 24.00){
-             */
-                //Distance Sensor on Right < x
-                //On Carousel Side
-/*
+
+                if (true) {
+
+                    //Distance Sensor on Right < x
+                    //On Carousel Side
+
                     if (pipeline.getType1().toString().equals("DUCK")) {
                         //Duck in Field 1
                         telemetry.addData("Duck: ", "Field 1");
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
-
+                        fingers.setPosition(0.1);
+                        wrist.setPosition(0);
+                        arm(5);
+                        senseLine("blue", 0.4);
+                        turn(0.5,60,0.5);
+                        moveInches(20,6);
+                        wrist.setPosition(0.25);
+                        sleep(250);
+                        fingers.setPosition(0.5);
+                        sleep(2000);
+                        wrist.setPosition(0);
+                        fingers.setPosition(0.1);
+                        moveInches(-4,4);
+                        turn(0.5,30,0.5);
+                        //spinner(-37.699,7.5);
+                        //arm(18);
+                        //arm(11);
+                        //arm(5);
+                        //sleep(10000);
                         //Color Sensor
-                        senseLine("blue", 0.25);
-                        turn(0.4, 0);
-                        turn(0.4, 180);
-                        turn(0.4, 0);
-                        turn(0.4, -180);
+                        //senseLine("blue", 0.65);
+                        //turn(0.5,38.5,0.33);
+                        //moveInches(-27,-15);
 
                     } else if (pipeline.getType2().toString().equals("DUCK")) {
                         //Duck in Field 2
@@ -170,9 +181,10 @@ public class FinalAuto extends LinearOpMode {
                     } else if (pipeline.getType3().toString().equals("DUCK")) {
                         //Duck in Field 3
                     }
-                }*/
-            }
+                }
+            }*/
         }
+    }
 
 
     public void duckyData() {
@@ -348,8 +360,8 @@ public class FinalAuto extends LinearOpMode {
     //Method to Turn Robot Using IMU
     void turn(double speed, double angleMeasure, double tolerance) {
         double startHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
-        boolean turnLeft = (((angleMeasure - startHeading) >= 0) && (startHeading >= 0)) || (((angleMeasure - startHeading) <= 0) && (startHeading < 0)) ;
-        boolean turnRight = (((angleMeasure - startHeading) <= 0) && (startHeading <= 0)) || (((angleMeasure - startHeading) >= 0) && (startHeading > 0));
+        boolean turnLeft = (((angleMeasure - startHeading) >= 0) && (angleMeasure >= 0)) || (((angleMeasure - startHeading) <= 0) && (angleMeasure < 0)) ;
+        boolean turnRight = (((angleMeasure - startHeading) <= 0) && (angleMeasure <= 0)) || (((angleMeasure - startHeading) >= 0) && (angleMeasure > 0));
         turned = false;
 
         while (opModeIsActive() && !turned) {
@@ -438,22 +450,70 @@ public class FinalAuto extends LinearOpMode {
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         } else if (status.equals("off")) {
             leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
+    }
+
+    void spinner (double distance, double velocity) {
+        encoders("on");
+        double calcRotation = -distance * 122.073;
+        int setRotation = (int) Math.round(calcRotation);
+
+        double calcVel = velocity * 122.073;
+        int setVel =(int) Math.round(calcVel);
+
+        spinner.setTargetPosition(setRotation);
+        spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        spinner.setVelocity(setVel);
+
+        while (opModeIsActive() && spinner.isBusy()) {
+            telemetry.addData("position", spinner.getCurrentPosition());
+            telemetry.update();
+        }
+        spinner.setVelocity(0);
+        encoders("off");
+    }
+
+    void arm (double distance) {
+        encoders("on");
+        double calcUp = -66.9174 + (75.7517 * distance) + (17.8479 * distance * distance) + (-1.75956 * distance * distance * distance) + (0.0462714 * distance * distance * distance * distance);// (100 * (distance + 0.76442)) / 1.00529;
+        int setUp = (int) Math.round(calcUp);
+
+        double calcInc = (500) ;
+        int setInc =(int) Math.round(calcInc);
+
+        arm.setTargetPosition(setUp);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setVelocity(setInc);
+
+        while (opModeIsActive() && arm.isBusy()) {
+            telemetry.addData("position", arm.getCurrentPosition());
+            telemetry.update();
+        }
+        arm.setVelocity(0);
+        encoders("off");
     }
 
     //Method to Move Robot Using Encoders
@@ -694,8 +754,8 @@ public class FinalAuto extends LinearOpMode {
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
         leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        spinner = hardwareMap.dcMotor.get("spinner");
-        arm = hardwareMap.dcMotor.get("arm");
+        spinner = hardwareMap.get(DcMotorEx.class, "spinner");
+        arm = hardwareMap.get(DcMotorEx.class, "arm");
 
         //Mapping Servos
         wrist = hardwareMap.servo.get("wrist");
