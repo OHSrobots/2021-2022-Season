@@ -35,7 +35,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.Locale;
 
-@Autonomous(name = "FinalAuto", group = "comp")
+@Autonomous(name = "FinalAuto")
 public class FinalAuto extends LinearOpMode {
 
     // Declaring Motors & Servos
@@ -77,11 +77,7 @@ public class FinalAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
             encoders("off");
-            wrist.setPosition(-0.25);
-            sleep(3);
-            fingers.setPosition(0.2);
 
-/*
             if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
                 //On Blue Side
 
@@ -99,17 +95,23 @@ public class FinalAuto extends LinearOpMode {
                         wrist.setPosition(0);
                         arm(5);
                         senseLine("blue", 0.4);
-                        turn(0.5,60,0.5);
-                        moveInches(20,6);
-                        wrist.setPosition(0.25);
-                        sleep(250);
-                        fingers.setPosition(0.5);
-                        sleep(2000);
+                        turn(0.5,50,"left",0.5);
+                        moveInches(18,6);
                         wrist.setPosition(0);
+                        sleep(250);
+                        fingers.setPosition(0.3);
+                        sleep(1000);
                         fingers.setPosition(0.1);
-                        moveInches(-4,4);
-                        turn(0.5,30,0.5);
-                        //spinner(-37.699,7.5);
+                        sleep(250);
+                        wrist.setPosition(0.25);
+                        moveInches(-4,6);
+                        turn(0.4,52,"right",0.5);
+                        moveInches(-45,12);
+                        spinner(-37.699,7.5);
+                        moveInches(2,6);
+                        turn(0.4,0,"right", 0.33);
+                        moveInches(24, 12);
+
                         //arm(18);
                         //arm(11);
                         //arm(5);
@@ -182,7 +184,7 @@ public class FinalAuto extends LinearOpMode {
                         //Duck in Field 3
                     }
                 }
-            }*/
+            }
         }
     }
 
@@ -358,21 +360,31 @@ public class FinalAuto extends LinearOpMode {
 
 
     //Method to Turn Robot Using IMU
-    void turn(double speed, double angleMeasure, double tolerance) {
+    void turn(double speed, double angleMeasure, String direction, double tolerance) {
         double startHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
-        boolean turnLeft = (((angleMeasure - startHeading) >= 0) && (angleMeasure >= 0)) || (((angleMeasure - startHeading) <= 0) && (angleMeasure < 0)) ;
-        boolean turnRight = (((angleMeasure - startHeading) <= 0) && (angleMeasure <= 0)) || (((angleMeasure - startHeading) >= 0) && (angleMeasure > 0));
+        boolean turnLeft;
+        boolean turnRight;
+
+        if (direction.equals("left")||direction.equals("Left")) {
+            turnLeft = true;
+            turnRight = false;
+        } else {
+            turnLeft = false;
+            turnRight = true;
+        }
+
         turned = false;
 
         while (opModeIsActive() && !turned) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             startHeading = Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
+            telemetry.addData("approaching", angleMeasure);
             telemetry.addData("heading", startHeading);
             telemetry.update();
             if (turnLeft) {
                 //turn left
-                if (startHeading >= 0) {
-                    if (startHeading <= angleMeasure + tolerance && startHeading >= angleMeasure - tolerance) {
+                if ((angleMeasure - startHeading) >= 0) {
+                    if ((startHeading <= (angleMeasure + tolerance)) && (startHeading >= (angleMeasure - tolerance))) {
                         forceStop();
                         turned = true;
                     } else if (startHeading >= (0.9 * angleMeasure) && startHeading < (angleMeasure - tolerance)) {
@@ -386,8 +398,7 @@ public class FinalAuto extends LinearOpMode {
                         rightBack.setPower(speed);
                         leftBack.setPower(-speed);
                     }
-                }
-                else {
+                } else {
                     if ((startHeading <= (angleMeasure + tolerance)) && (startHeading >= (angleMeasure - tolerance))) {
                         forceStop();
                         turned = true;
@@ -403,11 +414,9 @@ public class FinalAuto extends LinearOpMode {
                         leftBack.setPower(-speed);
                     }
                 }
-
-
             } else if (turnRight) {
                 //turn right
-                if (startHeading <= 0) {
+                if ((angleMeasure - startHeading) >= 0) {
                     if ((startHeading <= (angleMeasure + tolerance)) && (startHeading >= (angleMeasure - tolerance))) {
                         forceStop();
                         turned = true;
@@ -438,7 +447,6 @@ public class FinalAuto extends LinearOpMode {
                         leftBack.setPower(speed);
                     }
                 }
-
             }
         }
     }
