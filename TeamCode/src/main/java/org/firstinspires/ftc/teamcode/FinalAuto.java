@@ -93,10 +93,12 @@ public class FinalAuto extends LinearOpMode {
                         duckyData();
                         fingers.setPosition(0.1);
                         wrist.setPosition(0);
-                        arm(5);
-                        senseLine("blue", 0.4);
-                        turn(0.5,50,"left",0.5);
-                        moveInches(18,6);
+                        arm(20);
+                        //senseLine("blue", 0.4);
+                        //turn(0.5,50,"left",0.5);
+                        moveInches(36,16);
+                        turn(0.35,80,"left",0.33);
+                        moveInches(18,16);
                         wrist.setPosition(0);
                         sleep(250);
                         fingers.setPosition(0.3);
@@ -104,13 +106,15 @@ public class FinalAuto extends LinearOpMode {
                         fingers.setPosition(0.1);
                         sleep(250);
                         wrist.setPosition(0.25);
-                        moveInches(-4,6);
-                        turn(0.4,52,"right",0.5);
-                        moveInches(-45,12);
+                        moveInches(-18,16);
+                        turn(0.33,43,"right",0.5);
+                        moveInches(-35.5,16);
                         spinner(-37.699,7.5);
                         moveInches(2,6);
-                        turn(0.4,0,"right", 0.33);
-                        moveInches(24, 12);
+                        turn(0.35,0,"right", 0.33);
+                        senseLine("blue",0.4);
+                        moveInches(16.5, 16);
+
 
                         //arm(18);
                         //arm(11);
