@@ -91,39 +91,36 @@ public class FinalAuto extends LinearOpMode {
                         telemetry.addData("Duck: ", "Field 1");
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
+
                         fingers.setPosition(0.1);
-                        wrist.setPosition(0);
+                        wrist.setPosition(0.1);
                         arm(20);
-                        //senseLine("blue", 0.4);
-                        //turn(0.5,50,"left",0.5);
                         moveInches(36,16);
                         turn(0.35,80,"left",0.33);
-                        moveInches(18,16);
-                        wrist.setPosition(0);
+                        moveInches(15,16);
+                        wrist.setPosition(0.1);
                         sleep(250);
                         fingers.setPosition(0.3);
                         sleep(1000);
                         fingers.setPosition(0.1);
                         sleep(250);
-                        wrist.setPosition(0.25);
-                        moveInches(-18,16);
-                        turn(0.33,43,"right",0.5);
-                        moveInches(-35.5,16);
+                        wrist.setPosition(0.3);
+                        senseLine("blue",-0.4, "left");
+                        //moveInches(-8,16);
+                        turn(0.35, 30, "right", 0.5);
+                        moveInches(-9,12);
+                        senseLine("blue",-0.4, "right");
                         spinner(-37.699,7.5);
-                        moveInches(2,6);
-                        turn(0.35,0,"right", 0.33);
-                        senseLine("blue",0.4);
+                        senseLine("blue",0.4, "left");
                         moveInches(16.5, 16);
+                        turn(0.35, -80, "right", 0.5);
+                        moveInches(6,16);
+                        fingers.setPosition(0.1);
+                        wrist.setPosition(-0.5);
+                        arm.setVelocity(0);
+                        encoders("off");
+                        sleep(20000);
 
-
-                        //arm(18);
-                        //arm(11);
-                        //arm(5);
-                        //sleep(10000);
-                        //Color Sensor
-                        //senseLine("blue", 0.65);
-                        //turn(0.5,38.5,0.33);
-                        //moveInches(-27,-15);
 
                     } else if (pipeline.getType2().toString().equals("DUCK")) {
                         //Duck in Field 2
@@ -131,11 +128,70 @@ public class FinalAuto extends LinearOpMode {
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
 
+                        fingers.setPosition(0.1);
+                        wrist.setPosition(0.1);
+                        arm(14);
+                        moveInches(36,16);
+                        turn(0.35,80,"left",0.33);
+                        moveInches(15,16);
+                        wrist.setPosition(0.1);
+                        sleep(250);
+                        fingers.setPosition(0.3);
+                        sleep(1000);
+                        fingers.setPosition(0.1);
+                        sleep(250);
+                        wrist.setPosition(0.3);
+                        senseLine("blue",-0.4, "left");
+                        //moveInches(-8,16);
+                        turn(0.35, 30, "right", 0.5);
+                        moveInches(-9,12);
+                        senseLine("blue",-0.4, "right");
+                        spinner(-37.699,7.5);
+                        senseLine("blue",0.4, "left");
+                        moveInches(16.5, 16);
+                        turn(0.35, -80, "right", 0.5);
+                        moveInches(6,16);
+                        fingers.setPosition(0.1);
+                        wrist.setPosition(-0.5);
+                        arm.setVelocity(0);
+                        encoders("off");
+                        sleep(20000);
+
+
                     } else if (pipeline.getType3().toString().equals("DUCK")) {
                         //Duck in Field 3
                         telemetry.addData("Duck: ", "Field 3");
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
+
+                        fingers.setPosition(0.1);
+                        wrist.setPosition(0.1);
+                        arm(6);
+                        moveInches(36,16);
+                        turn(0.35,80,"left",0.33);
+                        moveInches(15,16);
+                        wrist.setPosition(0.1);
+                        sleep(250);
+                        fingers.setPosition(0.3);
+                        sleep(1000);
+                        fingers.setPosition(0.1);
+                        sleep(250);
+                        wrist.setPosition(0.3);
+                        senseLine("blue",-0.4, "left");
+                        //moveInches(-8,16);
+                        turn(0.35, 30, "right", 0.5);
+                        moveInches(-9,12);
+                        senseLine("blue",-0.4, "right");
+                        spinner(-37.699,7.5);
+                        senseLine("blue",0.4, "left");
+                        moveInches(16.5, 16);
+                        turn(0.35, -80, "right", 0.5);
+                        moveInches(6,16);
+                        fingers.setPosition(0.1);
+                        wrist.setPosition(-0.5);
+                        arm.setVelocity(0);
+                        encoders("off");
+                        sleep(20000);
                     }
 
                 } else if (false) {
@@ -249,7 +305,7 @@ public class FinalAuto extends LinearOpMode {
     }
 
     //Method to Find & Move to a White, Red, or Blue Line
-    void senseLine(String color, double speed) {
+    void senseLine(String color, double speed, String side) {
         final float[] hsvValues = new float[3];
         final float[] hsvValues2 = new float[3];
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -292,40 +348,45 @@ public class FinalAuto extends LinearOpMode {
 
             double BlueRedRatio = colors.blue / colors.red;
             double BlueRedRatio2 = colors2.blue / colors2.red;
-
-            if ((BlueRedRatio < 0.83 || BlueRedRatio > 2.032)) {
-                telemetry.addLine("lfColorSensor says:");
-                if (BlueRedRatio <= 0.83 && (color.equals("red") || color.equals("Red"))) {
-                    telemetry.addLine("Red Line Has Been Found! :)");
+            if (side.equals("left")) {
+                if ((BlueRedRatio < 0.83 || BlueRedRatio > 2.032)) {
+                    telemetry.addLine("lfColorSensor says:");
+                    if (BlueRedRatio <= 0.83 && (color.equals("red") || color.equals("Red"))) {
+                        telemetry.addLine("Red Line Has Been Found! :)");
+                        shouldBreak = true;
+                    } else if ((BlueRedRatio >= 2.032) && (color.equals("blue") || color.equals("Blue"))) {
+                        telemetry.addLine("Blue Line Has Been Found! :)");
+                        shouldBreak = true;
+                    }
+                } else if ((colors.green * 1000 >= 9.041) && (color.equals("white") || color.equals("White"))) {
+                    telemetry.addLine("lfColorSensor says:");
+                    telemetry.addLine("White Line Has Been Found! :)");
                     shouldBreak = true;
-                } else if ((BlueRedRatio >= 2.032) && (color.equals("blue") || color.equals("Blue"))) {
-                    telemetry.addLine("Blue Line Has Been Found! :)");
+                } else{
+                    telemetry.addLine("lfColorSensor says:");
+                    telemetry.addLine("Just Gray Tile :(");
+                }
+                telemetry.addLine();
+            } else if (side.equals("right")) {
+                if (BlueRedRatio2 < 0.83 || BlueRedRatio2 > 2.032) {
+                    telemetry.addLine("rfColorSensor says:");
+                    if (BlueRedRatio2 <= 0.83 && (color.equals("red") || color.equals("red"))) {
+                        telemetry.addLine("Red Line Has Been Found! :)");
+                        shouldBreak = true;
+                    } else if (BlueRedRatio2 >= 2.032 && (color.equals("blue") || color.equals("Blue"))) {
+                        telemetry.addLine("Blue Line Has Been Found! :)");
+                        shouldBreak = true;
+                    }
+                } else if (colors2.green * 1000 >= 9.041 && (color.equals("white") || color.equals("White"))) {
+                    telemetry.addLine("rfColorSensor says:");
+                    telemetry.addLine("White Line Has Been Found! :)");
                     shouldBreak = true;
+                } else{
+                    telemetry.addLine("rfColorSensor says:");
+                    telemetry.addLine("Just Gray Tile :(");
                 }
-            } else if ((colors.green * 1000 >= 9.041) && (color.equals("white") || color.equals("White"))) {
-                telemetry.addLine("lfColorSensor says:");
-                telemetry.addLine("White Line Has Been Found! :)");
-                shouldBreak = true;
-            } else{
-                telemetry.addLine("lfColorSensor says:");
-                telemetry.addLine("Just Gray Tile :(");
             }
-            telemetry.addLine();
 
-            if (BlueRedRatio2 < 0.83 || BlueRedRatio2 > 2.032) {
-                telemetry.addLine("rfColorSensor says:");
-                if (BlueRedRatio2 <= 0.83 && (color.equals("red") || color.equals("red"))) {
-                    telemetry.addLine("Red Line Has Been Found! :)");
-                } else if (BlueRedRatio2 >= 2.032 && (color.equals("blue") || color.equals("Blue"))) {
-                    telemetry.addLine("Blue Line Has Been Found! :)");
-                }
-            } else if (colors2.green * 1000 >= 9.041 && (color.equals("white") || color.equals("White"))) {
-                telemetry.addLine("rfColorSensor says:");
-                telemetry.addLine("White Line Has Been Found! :)");
-            } else{
-                telemetry.addLine("rfColorSensor says:");
-                telemetry.addLine("Just Gray Tile :(");
-            }
 
             telemetry.addLine();
             telemetry.addLine();
@@ -515,7 +576,9 @@ public class FinalAuto extends LinearOpMode {
 
         double calcInc = (500) ;
         int setInc =(int) Math.round(calcInc);
-
+        if (distance < 0){
+            setInc = (int) -Math.round(calcInc);
+        }
         arm.setTargetPosition(setUp);
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         arm.setVelocity(setInc);
