@@ -70,8 +70,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Autonomous(name = "FinalAuto")
-public class FinalAuto extends LinearOpMode {
+@Autonomous(name = "FinalBlueStorage")
+public class FinalBlueStorage extends LinearOpMode {
     // Declaring Motors & Servos
     private DcMotorEx leftFront;        //port 0
     private DcMotorEx rightFront;       //port 1
@@ -132,8 +132,8 @@ public class FinalAuto extends LinearOpMode {
     final float CAMERA_LEFT_DISPLACEMENT     = 0.0f * mmPerInch;   // eg: Enter the left distance from the center of the robot to the camera lens
 
     //OpenGLMatrix cameraLocationOnRobot = OpenGLMatrix
-          //  .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-          //  .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XZY, DEGREES, 90, 90, 0));
+    //  .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+    //  .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XZY, DEGREES, 90, 90, 0));
 
 
     @Override
@@ -159,20 +159,15 @@ public class FinalAuto extends LinearOpMode {
 
 
                         fingers.setPosition(0.1);
-                        wrist.setPosition(0.3);
-                        arm(10);
-                        moveInches(36,16);
-                        turn(0.35,80,"left",0.33);
-                        moveInches(12,16);
-                        wrist.setPosition(0.3);
+                        wrist.setPosition(0.1);
+                        arm(4);
+                        //moveInches(36,16);
+                        turn(0.35,-35,"right",0.33);
+                        moveInches(27,16);
+                        wrist.setPosition(0.6);
                         sleep(500);
-                        fingers.setPosition(0.4);
-                        moveInches(-17,16);
-                        turn(0.35,40,"right",0.33);
-                        moveInches(-33.5,16);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(120,20);
+                        fingers.setPosition(0.3);
+
 
 
 
@@ -206,6 +201,7 @@ public class FinalAuto extends LinearOpMode {
                         sleep(30000);
 
 
+
                     } else if (pipeline.getType2().toString().equals("DUCK")) {
                         //Duck in Field 2
                         telemetry.addData("Duck: ", "Field 2");
@@ -213,21 +209,20 @@ public class FinalAuto extends LinearOpMode {
                         duckyData();
 
 
+
                         fingers.setPosition(0.1);
-                        wrist.setPosition(0.3);
-                        arm(26);
-                        moveInches(10,16);
-                        turn(0.35,45,"left",0.33);
-                        moveInches(22,16);
+                        wrist.setPosition(0.1);
+                        arm(7.8);
+                        //moveInches(36,16);
+                        turn(0.35,-25,"right",0.33);
+                        moveInches(28,16);
+                        wrist.setPosition(0.35);
+                        sleep(500);
                         fingers.setPosition(0.3);
-                        moveInches(-22,16);
 
-                        turn(0.35,60,"left",0.33);
 
-                        moveInches(-18,16);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(100,20);
+
+
 
                         /*moveInches(36,16);
                         turn(0.35,80,"left",0.33);
@@ -263,22 +258,22 @@ public class FinalAuto extends LinearOpMode {
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
 
+
                         fingers.setPosition(0.1);
                         wrist.setPosition(0.1);
-                        arm(30);
-                        moveInches(10,16);
-                        turn(0.35,45,"left",0.33);
-                        moveInches(22,16);
+                        arm(18);
+                        //moveInches(36,16);
+                        turn(0.35,-25,"right",0.33);
+                        moveInches(28,16);
+                        wrist.setPosition(0.35);
+                        sleep(500);
                         fingers.setPosition(0.3);
-                        moveInches(-22,16);
 
-                        turn(0.35,60,"left",0.33);
 
-                        moveInches(-18,16);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(100,20);
-                        
+
+
+
+
                         //turn(0.35,0,"right",0.33);
 
                         /*moveInches(15,16);
@@ -339,6 +334,7 @@ public class FinalAuto extends LinearOpMode {
                         moveInches(22,16);
                         fingers.setPosition(0.3);
 
+
                     } else if (pipeline.getType2().toString().equals("DUCK")) {
                         //Duck in Field 2
                         telemetry.addData("Duck: ", "Field 2");
@@ -352,6 +348,9 @@ public class FinalAuto extends LinearOpMode {
                         turn(-0.35,-45,"right",0.33);
                         moveInches(28,16);
                         fingers.setPosition(0.3);
+
+
+
 
                     } else if (pipeline.getType3().toString().equals("DUCK")) {
                         //Duck in Field 3
@@ -368,6 +367,10 @@ public class FinalAuto extends LinearOpMode {
                         wrist.setPosition(0.6);
                         sleep(500);
                         fingers.setPosition(0.3);
+
+
+
+
                     }
 
                 } else if (false) {
@@ -467,22 +470,22 @@ public class FinalAuto extends LinearOpMode {
             double P = Math.abs(0.025 * heading);
 
             //If-Else-If Statement to Drive Forward or Backwards in a Straight Line
-                if (heading < -0.1 && heading > -90) {
-                    leftFront.setPower(speed - P);
-                    leftBack.setPower(speed - P);
-                    rightFront.setPower(speed + P);
-                    rightBack.setPower(speed + P);
-                } else if (heading > 0.1 && heading < 90) {
-                    leftFront.setPower(speed + P);
-                    leftBack.setPower(speed + P);
-                    rightFront.setPower(speed - P);
-                    rightBack.setPower(speed - P);
-                } else {
-                    leftFront.setPower(speed);
-                    leftBack.setPower(speed);
-                    rightFront.setPower(speed);
-                    rightBack.setPower(speed);
-                }
+            if (heading < -0.1 && heading > -90) {
+                leftFront.setPower(speed - P);
+                leftBack.setPower(speed - P);
+                rightFront.setPower(speed + P);
+                rightBack.setPower(speed + P);
+            } else if (heading > 0.1 && heading < 90) {
+                leftFront.setPower(speed + P);
+                leftBack.setPower(speed + P);
+                rightFront.setPower(speed - P);
+                rightBack.setPower(speed - P);
+            } else {
+                leftFront.setPower(speed);
+                leftBack.setPower(speed);
+                rightFront.setPower(speed);
+                rightBack.setPower(speed);
+            }
 
             double BlueRedRatio = colors.blue / colors.red;
             double BlueRedRatio2 = colors2.blue / colors2.red;
@@ -712,7 +715,7 @@ public class FinalAuto extends LinearOpMode {
         double calcUp = -66.9174 + (75.7517 * distance) + (17.8479 * distance * distance) + (-1.75956 * distance * distance * distance) + (0.0462714 * distance * distance * distance * distance);// (100 * (distance + 0.76442)) / 1.00529;
         int setUp = (int) Math.round(calcUp);
 
-        double calcInc = (1000) ;
+        double calcInc = (500) ;
         int setInc =(int) Math.round(calcInc);
         if (distance < 0){
             setInc = (int) -Math.round(calcInc);
@@ -1043,16 +1046,16 @@ public class FinalAuto extends LinearOpMode {
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-       // parameters2.vuforiaLicenseKey = VUFORIA_KEY;
+        // parameters2.vuforiaLicenseKey = VUFORIA_KEY;
 
         // We also indicate which camera we wish to use.
-       // parameters2.cameraName = webcamName;
+        // parameters2.cameraName = webcamName;
 
         // Turn off Extended tracking.  Set this true if you want Vuforia to track beyond the target.
-       // parameters2.useExtendedTracking = false;
+        // parameters2.useExtendedTracking = false;
 
         //  Instantiate the Vuforia engine
-       // vuforia = ClassFactory.getInstance().createVuforia(parameters2);
+        // vuforia = ClassFactory.getInstance().createVuforia(parameters2);
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.

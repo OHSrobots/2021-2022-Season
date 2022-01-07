@@ -78,9 +78,9 @@ public class FinalTeleOp extends LinearOpMode {
                 rightBack.setPower(0);
             }
             if (gamepad1.a) {
-                spinner.setPower(-0.55);
+                spinner.setPower(-0.8);
             } else if (gamepad1.b) {
-                spinner.setPower(0.55);
+                spinner.setPower(0.8);
             } else {
                 spinner.setPower(0);
             }
@@ -94,9 +94,9 @@ public class FinalTeleOp extends LinearOpMode {
 
             //Spin Spinner
             if (gamepad2.a) {
-                spinner.setPower(-0.55);
+                spinner.setPower(-0.8);
             } else if (gamepad2.b) {
-                spinner.setPower(0.55);
+                spinner.setPower(0.8);
             } else {
                 spinner.setPower(0);
             }
@@ -110,9 +110,9 @@ public class FinalTeleOp extends LinearOpMode {
 
             //Turn Wrist In and Out
             if (gamepad2.left_bumper) {
-                wrist.setPosition(.25);
+                wrist.setPosition(0.9);
             } else if (gamepad2.right_bumper) {
-                wrist.setPosition(-.25);
+                wrist.setPosition(0.0);
             }
 
         }}
@@ -159,7 +159,7 @@ public class FinalTeleOp extends LinearOpMode {
         if (rfColorSensor instanceof SwitchableLight) {
             ((SwitchableLight) rfColorSensor).enableLight(true);
         }
-
+        /*
         //IMU Mapping and Set-Up
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -189,7 +189,7 @@ public class FinalTeleOp extends LinearOpMode {
 
             }
         });
-
+        */
         //Reset Encoders
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
