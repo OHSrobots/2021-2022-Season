@@ -42,8 +42,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.Locale;
 
-@Autonomous(name = "FinalAuto")
-public class FinalAuto extends LinearOpMode {
+@Autonomous(name = "Redside")
+public class Redside extends LinearOpMode {
     // Declaring Motors & Servos
     private DcMotorEx leftFront;        //port 0
     private DcMotorEx rightFront;       //port 1
@@ -132,19 +132,24 @@ public class FinalAuto extends LinearOpMode {
 
                         fingers.setPosition(0.1);
                         wrist.setPosition(0.3);
-                        arm(10);
+                        arm(22);
                         moveInches(36,16);
-                        turn(0.35,80,"left",0.33);
-                        moveInches(12,16);
+                        turn(0.35,-80,"right",0.33);
+                        moveInches(10,16);
                         wrist.setPosition(0.3);
                         sleep(500);
                         fingers.setPosition(0.4);
-                        moveInches(-17,16);
-                        turn(0.35,40,"right",0.33);
+                        moveInches(-40,16);
+
+                        turn(0.35,-5,"left",0.33);
+
                         moveInches(-33.5,16);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(120,20);
+                        //turn(.35,-65,"right",.33);
+                        //moveInches(-44,16);
+
+                        spinner(47.1238898038,10);
+                        //turn(0.35,-80,"right",0.33);
+                        //moveInches(120,20);
 
 
 
@@ -187,18 +192,18 @@ public class FinalAuto extends LinearOpMode {
 
                         fingers.setPosition(0.1);
                         wrist.setPosition(0.3);
-                        arm(26);
+                        arm(28);
                         moveInches(10,16);
-                        turn(0.35,45,"left",0.33);
+                        turn(0.35,-40,"right",0.33);
                         moveInches(22,16);
                         fingers.setPosition(0.3);
                         moveInches(-22,16);
 
-                        turn(0.35,60,"left",0.33);
+                        turn(0.35,-55,"right",0.33);
 
-                        moveInches(-18,16);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
+                        moveInches(-24.5,16);
+                        spinner(47.1238898038,10);
+                        turn(0.35,-80,"right",0.33);
                         moveInches(100,20);
 
                         /*moveInches(36,16);
@@ -236,20 +241,20 @@ public class FinalAuto extends LinearOpMode {
                         duckyData();
 
                         fingers.setPosition(0.1);
-                        wrist.setPosition(0.1);
-                        arm(30);
+                        wrist.setPosition(0.3);
+                        arm(30.5);
                         moveInches(10,16);
-                        turn(0.35,45,"left",0.33);
+                        turn(0.35,-40,"right",0.33);
                         moveInches(22,16);
                         fingers.setPosition(0.3);
                         moveInches(-22,16);
 
-                        turn(0.35,60,"left",0.33);
+                        turn(0.35,-60,"right",0.33);
 
-                        moveInches(-18,16);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(100,20);
+                        moveInches(-25,16);
+                        spinner(47.1238898038,10);
+                        turn(0.35,-80,"right",0.33);
+                        moveInches(100,100);
 
                         //turn(0.35,0,"right",0.33);
 
