@@ -129,59 +129,40 @@ public class Redside extends LinearOpMode {
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
 
-
+                        //fingers face forward, wrist opens, arm on bottom level
                         fingers.setPosition(0.1);
                         wrist.setPosition(0.25);
-                        arm(20);
+                        arm(21);
+
+                        //start moving
                         moveInches(36,16);
-                        turn(0.35,-80,"right",0.33);
-                        moveInches(8,16);
-                        //wrist.setPosition(0.25);
+                        turn(0.35,-80,"right",0.35);
+                        //moveInches(4,16);
+
+                        //drop off block
                         sleep(500);
                         fingers.setPosition(0.4);
-                        moveInches(-42,16);
 
-                        turn(0.35,-5,"left",0.33);
+                        //to wall
+                        moveInches(-26,16);
 
-                        moveInches(-33.5,16);
+                        //to ducky
+                        turn(0.35,-20,"left",0.5);
+                        moveInches(-30,16);
+
+                        //deliver ducky
                         spinner(47.1238898038,10);
 
-                        turn(.35,-65,"right",.40);
-                        //moveInches(-44,16);
-
-                        //spinner(47.1238898038,80);
-                        turn(0.35,-80,"right",0.33);
-                        moveInches(120,20);
-
-
-
-                        /*fingers.setPosition(0.1);
-                        wrist.setPosition(0.1);
-                        arm(20);
-                        moveInches(36,16);
-                        turn(0.35,80,"left",0.33);
-                        moveInches(15,16);
-                        wrist.setPosition(0.6);
-                        sleep(250);
-                        fingers.setPosition(0.3);
-                        sleep(1000);
+                        //fold in arm
                         fingers.setPosition(0.1);
-                        sleep(250);
-                        wrist.setPosition(0.3);
-                        senseLine("blue",-0.4, "left");
-                        //moveInches(-8,16);
-                        turn(0.35, 30, "right", 0.5);
-                        moveInches(-9,12);
-                        senseLine("blue",-0.4, "right");
-                        spinner(-37.699,7.5);
-                        senseLine("blue",0.4, "left");
-                        moveInches(16.5, 16);
-                        turn(0.35, -80, "right", 0.5);
-                        moveInches(6,16);
-                        fingers.setPosition(0.1);
-                        wrist.setPosition(-0.5);
-                        arm.setVelocity(0);
-                        encoders("off");*/
+                        wrist.setPosition(0.9);
+
+                        //to warehouse
+                        moveInches(8, 16);
+                        turn(0.35,-80,"right",0.5);
+                        moveInches(110,20);
+
+                        //nap time
                         sleep(30000);
 
 
@@ -191,49 +172,41 @@ public class Redside extends LinearOpMode {
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
 
-
+                        //fingers face forward, wrist opens, arm on bottom level
                         fingers.setPosition(0.1);
                         wrist.setPosition(0.3);
-                        arm(28);
+                        arm(26.5);
+
+                        //start moving
                         moveInches(10,16);
-                        turn(0.35,-40,"right",0.33);
-                        moveInches(22,16);
+                        turn(0.35,-30,"right",0.5);
+                        moveInches(18,16);
+
+                        //drop off block
+                        sleep(500);
                         fingers.setPosition(0.3);
-                        moveInches(-22,16);
 
-                        turn(0.35,-55,"right",0.33);
+                        //to wall
+                        moveInches(-18,16);
 
-                        moveInches(-24.5,16);
+                        //to ducky
+                        turn(0.35,-55,"right",0.5);
+                        moveInches(-26.5,16);
+
+                        //deliver ducky
                         spinner(47.1238898038,10);
-                        turn(0.35,-80,"right",0.33);
-                        moveInches(100,20);
 
-                        /*moveInches(36,16);
-                        turn(0.35,80,"left",0.33);
-                        moveInches(15,16);
-                        wrist.setPosition(0.6);
-                        sleep(250);
-                        fingers.setPosition(0.3);
-                        sleep(1000);
+
+                        //fold in arm
                         fingers.setPosition(0.1);
-                        sleep(250);
-                        wrist.setPosition(0.3);
-                        senseLine("blue",-0.4, "left");
-                        //moveInches(-8,16);
-                        turn(0.35, 30, "right", 0.5);
-                        moveInches(-9,12);
-                        senseLine("blue",-0.4, "right");
-                        spinner(-37.699,7.5);
-                        senseLine("blue",0.4, "left");
-                        moveInches(16.5, 16);
-                        turn(0.35, -80, "right", 0.5);
-                        moveInches(6,16);
-                        fingers.setPosition(0.1);
-                        wrist.setPosition(-0.5);
-                        arm.setVelocity(0);
-                        encoders("off");
-                        sleep(20000);
-                        */
+                        wrist.setPosition(0.9);
+
+                        //to warehouse
+                        moveInches(8, 16);
+                        turn(0.35,-80,"right",0.5);
+                        moveInches(93,24);
+
+                        //nap time
                         sleep(30000);
 
                     } else if (pipeline.getType3().toString().equals("DUCK")) {
@@ -242,46 +215,41 @@ public class Redside extends LinearOpMode {
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
 
+                        //fingers face forward, wrist opens, arm on bottom level
                         fingers.setPosition(0.1);
                         wrist.setPosition(0.3);
-                        arm(30.5);
+                        arm(29.5);
+
+                        //start moving
                         moveInches(10,16);
-                        turn(0.35,-40,"right",0.33);
-                        moveInches(22,16);
-                        fingers.setPosition(0.3);
-                        moveInches(-22,16);
+                        turn(0.35,-30,"right",0.5);
+                        moveInches(18,16);
 
-                        turn(0.35,-60,"right",0.33);
-
-                        moveInches(-25,16);
-                        spinner(47.1238898038,10);
-                        turn(0.35,-80,"right",0.33);
-                        moveInches(100,100);
-
-                        //turn(0.35,0,"right",0.33);
-
-                        /*moveInches(15,16);
-                        wrist.setPosition(0.6);
+                        //drop off block
                         sleep(500);
                         fingers.setPosition(0.3);
-                        sleep(1000);
+
+                        //to wall
+                        moveInches(-16,16);
+
+                        //to ducky
+                        turn(0.35,-55,"right",0.5);
+                        moveInches(-26,16);
+                        moveInches(-2,8);
+
+                        //deliver ducky
+                        spinner(47.1238898038,10);
+
+                        //fold in arm
                         fingers.setPosition(0.1);
-                        sleep(250);
-                        wrist.setPosition(0.3);
-                        senseLine("blue",-0.4, "left");
-                        //moveInches(-8,16);
-                        turn(0.35, 30, "right", 0.5);
-                        moveInches(-9,12);
-                        senseLine("blue",-0.4, "right");
-                        spinner(-37.699,7.5);
-                        senseLine("blue",0.4, "left");
-                        moveInches(16.5, 16);
-                        turn(0.35, -80, "right", 0.5);
-                        moveInches(6,16);
-                        fingers.setPosition(0.1);
-                        wrist.setPosition(-0.5);
-                        arm.setVelocity(0);
-                        encoders("off");*/
+                        wrist.setPosition(0.9);
+
+                        //to warehouse
+                        moveInches(8, 16);
+                        turn(0.35,-75,"right",0.5);
+                        moveInches(102,100);
+
+                        //nap time
                         sleep(30000);
                     }
 

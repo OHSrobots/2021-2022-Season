@@ -43,7 +43,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.Locale;
 
 @Autonomous(name = "FinalAuto")
-public class FinalAuto extends LinearOpMode {
+public class FinalAutoStay extends LinearOpMode {
     // Declaring Motors & Servos
     private DcMotorEx leftFront;        //port 0
     private DcMotorEx rightFront;       //port 1
@@ -144,8 +144,7 @@ public class FinalAuto extends LinearOpMode {
                         moveInches(-29.5,16);
                         moveInches(-2,8);
                         spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(120,20);
+
 
 
 
@@ -200,8 +199,7 @@ public class FinalAuto extends LinearOpMode {
                         moveInches(-16,16);
                         moveInches(-2,8);
                         spinner(-47.1238898038,10);
-                        turn(0.35,88,"left",0.33);
-                        moveInches(100,20);
+
 
                         /*moveInches(36,16);
                         turn(0.35,80,"left",0.33);
@@ -251,8 +249,6 @@ public class FinalAuto extends LinearOpMode {
                         moveInches(-16,16);
                         moveInches(-2,8);
                         spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(100,20);
 
                         //turn(0.35,0,"right",0.33);
 

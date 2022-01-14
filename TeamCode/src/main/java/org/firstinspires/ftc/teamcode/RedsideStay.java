@@ -42,8 +42,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.Locale;
 
-@Autonomous(name = "FinalAuto")
-public class FinalAuto extends LinearOpMode {
+@Autonomous(name = "Redside")
+public class RedsideStay extends LinearOpMode {
     // Declaring Motors & Servos
     private DcMotorEx leftFront;        //port 0
     private DcMotorEx rightFront;       //port 1
@@ -115,7 +115,7 @@ public class FinalAuto extends LinearOpMode {
         while (opModeIsActive()) {
             encoders("off");
 
-            if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
+            if (pipeline.getType1().toString().equals("REDSQUARE") || pipeline.getType2().toString().equals("REDSQUARE") || pipeline.getType3().toString().equals("REDSQUARE")) {
                 //On Blue Side
 
                 if (true) {
@@ -129,53 +129,36 @@ public class FinalAuto extends LinearOpMode {
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
 
-
+                        //fingers face forward, wrist opens, arm on bottom level
                         fingers.setPosition(0.1);
-                        wrist.setPosition(0.3);
-                        arm(12);
+                        wrist.setPosition(0.25);
+                        arm(21);
+
+                        //start moving
                         moveInches(36,16);
-                        turn(0.35,80,"left",0.33);
-                        moveInches(12,16);
-                        wrist.setPosition(0.3);
+                        turn(0.35,-80,"right",0.35);
+                        //moveInches(4,16);
+
+                        //drop off block
                         sleep(500);
                         fingers.setPosition(0.4);
-                        moveInches(-17,16);
-                        turn(0.35,40,"right",0.33);
-                        moveInches(-29.5,16);
-                        moveInches(-2,8);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(120,20);
 
+                        //to wall
+                        moveInches(-26,16);
 
+                        //to ducky
+                        turn(0.35,-20,"left",0.5);
+                        moveInches(-30,16);
 
-                        /*fingers.setPosition(0.1);
-                        wrist.setPosition(0.1);
-                        arm(20);
-                        moveInches(36,16);
-                        turn(0.35,80,"left",0.33);
-                        moveInches(15,16);
-                        wrist.setPosition(0.6);
-                        sleep(250);
-                        fingers.setPosition(0.3);
-                        sleep(1000);
+                        //deliver ducky
+                        spinner(47.1238898038,10);
+
+                        //fold in arm
                         fingers.setPosition(0.1);
-                        sleep(250);
-                        wrist.setPosition(0.3);
-                        senseLine("blue",-0.4, "left");
-                        //moveInches(-8,16);
-                        turn(0.35, 30, "right", 0.5);
-                        moveInches(-9,12);
-                        senseLine("blue",-0.4, "right");
-                        spinner(-37.699,7.5);
-                        senseLine("blue",0.4, "left");
-                        moveInches(16.5, 16);
-                        turn(0.35, -80, "right", 0.5);
-                        moveInches(6,16);
-                        fingers.setPosition(0.1);
-                        wrist.setPosition(-0.5);
-                        arm.setVelocity(0);
-                        encoders("off");*/
+                        wrist.setPosition(0.9);
+
+
+                        //nap time
                         sleep(30000);
 
 
@@ -185,50 +168,37 @@ public class FinalAuto extends LinearOpMode {
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
 
-
+                        //fingers face forward, wrist opens, arm on bottom level
                         fingers.setPosition(0.1);
                         wrist.setPosition(0.3);
-                        arm(27);
+                        arm(26.5);
+
+                        //start moving
                         moveInches(10,16);
-                        turn(0.35,45,"left",0.33);
-                        moveInches(22,16);
+                        turn(0.35,-30,"right",0.5);
+                        moveInches(18,16);
+
+                        //drop off block
+                        sleep(500);
                         fingers.setPosition(0.3);
-                        moveInches(-22,16);
 
-                        turn(0.35,60,"left",0.33);
+                        //to wall
+                        moveInches(-18,16);
 
-                        moveInches(-16,16);
-                        moveInches(-2,8);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,88,"left",0.33);
-                        moveInches(100,20);
+                        //to ducky
+                        turn(0.35,-55,"right",0.5);
+                        moveInches(-26.5,16);
 
-                        /*moveInches(36,16);
-                        turn(0.35,80,"left",0.33);
-                        moveInches(15,16);
-                        wrist.setPosition(0.6);
-                        sleep(250);
-                        fingers.setPosition(0.3);
-                        sleep(1000);
+                        //deliver ducky
+                        spinner(47.1238898038,10);
+
+
+                        //fold in arm
                         fingers.setPosition(0.1);
-                        sleep(250);
-                        wrist.setPosition(0.3);
-                        senseLine("blue",-0.4, "left");
-                        //moveInches(-8,16);
-                        turn(0.35, 30, "right", 0.5);
-                        moveInches(-9,12);
-                        senseLine("blue",-0.4, "right");
-                        spinner(-37.699,7.5);
-                        senseLine("blue",0.4, "left");
-                        moveInches(16.5, 16);
-                        turn(0.35, -80, "right", 0.5);
-                        moveInches(6,16);
-                        fingers.setPosition(0.1);
-                        wrist.setPosition(-0.5);
-                        arm.setVelocity(0);
-                        encoders("off");
-                        sleep(20000);
-                        */
+                        wrist.setPosition(0.9);
+
+
+                        //nap time
                         sleep(30000);
 
                     } else if (pipeline.getType3().toString().equals("DUCK")) {
@@ -237,47 +207,37 @@ public class FinalAuto extends LinearOpMode {
                         telemetry.addData("Robot: ", "Blue Carousel");
                         duckyData();
 
+                        //fingers face forward, wrist opens, arm on bottom level
                         fingers.setPosition(0.1);
-                        wrist.setPosition(0.1);
-                        arm(29);
+                        wrist.setPosition(0.3);
+                        arm(29.5);
+
+                        //start moving
                         moveInches(10,16);
-                        turn(0.35,45,"left",0.33);
-                        moveInches(22,16);
-                        fingers.setPosition(0.3);
-                        moveInches(-22,16);
+                        turn(0.35,-30,"right",0.5);
+                        moveInches(18,16);
 
-                        turn(0.35,60,"left",0.33);
-
-                        moveInches(-16,16);
-                        moveInches(-2,8);
-                        spinner(-47.1238898038,10);
-                        turn(0.35,90,"left",0.33);
-                        moveInches(100,20);
-
-                        //turn(0.35,0,"right",0.33);
-
-                        /*moveInches(15,16);
-                        wrist.setPosition(0.6);
+                        //drop off block
                         sleep(500);
                         fingers.setPosition(0.3);
-                        sleep(1000);
+
+                        //to wall
+                        moveInches(-16,16);
+
+                        //to ducky
+                        turn(0.35,-55,"right",0.5);
+                        moveInches(-26,16);
+                        moveInches(-2,8);
+
+                        //deliver ducky
+                        spinner(47.1238898038,10);
+
+                        //fold in arm
                         fingers.setPosition(0.1);
-                        sleep(250);
-                        wrist.setPosition(0.3);
-                        senseLine("blue",-0.4, "left");
-                        //moveInches(-8,16);
-                        turn(0.35, 30, "right", 0.5);
-                        moveInches(-9,12);
-                        senseLine("blue",-0.4, "right");
-                        spinner(-37.699,7.5);
-                        senseLine("blue",0.4, "left");
-                        moveInches(16.5, 16);
-                        turn(0.35, -80, "right", 0.5);
-                        moveInches(6,16);
-                        fingers.setPosition(0.1);
-                        wrist.setPosition(-0.5);
-                        arm.setVelocity(0);
-                        encoders("off");*/
+                        wrist.setPosition(0.9);
+
+
+                        //nap time
                         sleep(30000);
                     }
 
@@ -294,7 +254,7 @@ public class FinalAuto extends LinearOpMode {
                     }
                 }
 
-            } else if (pipeline.getType1().toString().equals("REDSQUARE") || pipeline.getType2().toString().equals("REDSQUARE") || pipeline.getType3().toString().equals("REDSQUARE")) {
+            } else if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
                 //On Red Side
                 if (true) {
                     //Distance Sensor on Left < x
@@ -844,36 +804,37 @@ public class FinalAuto extends LinearOpMode {
             Imgproc.rectangle(input, topLeft2, bottomRight2, BLUE, 2);
             Imgproc.rectangle(input, topLeft3, bottomRight3, BLUE, 2);
 
-            if (averageCb < 120 && averageCr < 150) {
-                type1 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb >= 120) {
-                type1 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr >= 150) {
+
+            if (((double)getAverageCb())/(double)getAverageCr() < 0.9547) {
                 type1 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if (((double)getAverageCb())/(double)getAverageCr() < 1.1234) {
+                type1 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if (((double)getAverageCb())/(double)getAverageCr() < 150) {
+                type1 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type1 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-            if (averageCb2 < 120 && averageCr2 < 150) {
-                type2 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb2 >= 120) {
-                type2 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr2 >= 150) {
+            if (((double)getAverageCb2())/(double)getAverageCr2() < 0.9547) {
                 type2 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if (((double)getAverageCb2())/(double)getAverageCr2() < 1.1234) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if ((((double)getAverageCb2())/(double)getAverageCr2()) < 150) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type2 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-
-            if (averageCb3 < 120 && averageCr3 < 150) {
-                type3 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb3 >= 120) {
-                type3 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr3 >= 150) {
+            if ((((double)getAverageCb3())/(double)getAverageCr3()) < 0.9547) {
                 type3 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if ((((double)getAverageCb3())/(double)getAverageCr3()) <1.1234) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if ((((double)getAverageCb3())/(double)getAverageCr3()) < 150) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type3 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
+
 
             return input;
         }
