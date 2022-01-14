@@ -112,7 +112,7 @@ public class FinalTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper) {
                 wrist.setPosition(0.9);
             } else if (gamepad2.right_bumper) {
-                wrist.setPosition(0.0);
+                wrist.setPosition(0.3);
             }
 
         }}

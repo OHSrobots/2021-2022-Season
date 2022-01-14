@@ -50,6 +50,8 @@ public class OpenCVTest extends LinearOpMode {
             telemetry.addData("AverageY", pipeline.getAverageY());
             telemetry.addData("AverageCr", pipeline.getAverageCr());
             telemetry.addData("AverageCb", pipeline.getAverageCb());
+            telemetry.addData("AverageCb", ((double)pipeline.getAverageCb())/(double)pipeline.getAverageCr());
+
 
             telemetry.addData("Field 2", pipeline.getType2());
             telemetry.addData("AverageY", pipeline.getAverageY2());
@@ -159,36 +161,36 @@ public class OpenCVTest extends LinearOpMode {
             Imgproc.rectangle(input, topLeft2, bottomRight2, BLUE, 2);
             Imgproc.rectangle(input, topLeft3, bottomRight3, BLUE, 2);
 
-            if (averageCb < 120 && averageCr < 150) {
-                type1 = TYPE.DUCK;
-            } else if (averageCb >= 120) {
-                type1 = TYPE.BLUESQUARE;
-            } else if (averageCr >= 150) {
-                type1 = TYPE.REDSQUARE;
+            if (((double)getAverageCb())/(double)getAverageCr() < 0.9547) {
+                type1 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if (((double)getAverageCb())/(double)getAverageCr() < 1.1234) {
+                type1 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if (((double)getAverageCb())/(double)getAverageCr() < 150) {
+                type1 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
-                type1 = TYPE.NULL;
+                type1 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-            if (averageCb2 < 120 && averageCr2 < 150) {
-                type2 = TYPE.DUCK;
-            } else if (averageCb2 >= 120) {
-                type2 = TYPE.BLUESQUARE;
-            } else if (averageCr2 >= 150) {
-                type2 = TYPE.REDSQUARE;
+            if (((double)getAverageCb2())/(double)getAverageCr2() < 0.9547) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if (((double)getAverageCb2())/(double)getAverageCr2() < 1.1234) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if ((((double)getAverageCb2())/(double)getAverageCr2()) < 150) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
-                type2 = TYPE.NULL;
+                type2 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-
-            if (averageCb3 < 120 && averageCr3 < 150) {
-                type3 = TYPE.DUCK;
-            } else if (averageCb3 >= 120) {
-                type3 = TYPE.BLUESQUARE;
-            } else if (averageCr3 >= 150) {
-                type3 = TYPE.REDSQUARE;
+            if ((((double)getAverageCb3())/(double)getAverageCr3()) < 0.9547) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if ((((double)getAverageCb3())/(double)getAverageCr3()) <1.1234) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if ((((double)getAverageCb3())/(double)getAverageCr3()) < 150) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
-                type3 = TYPE.NULL;
+                type3 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
+
 
             return input;
         }

@@ -115,7 +115,7 @@ public class Redside extends LinearOpMode {
         while (opModeIsActive()) {
             encoders("off");
 
-            if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
+            if (pipeline.getType1().toString().equals("REDSQUARE") || pipeline.getType2().toString().equals("REDSQUARE") || pipeline.getType3().toString().equals("REDSQUARE")) {
                 //On Blue Side
 
                 if (true) {
@@ -131,25 +131,27 @@ public class Redside extends LinearOpMode {
 
 
                         fingers.setPosition(0.1);
-                        wrist.setPosition(0.3);
-                        arm(22);
+                        wrist.setPosition(0.25);
+                        arm(20);
                         moveInches(36,16);
                         turn(0.35,-80,"right",0.33);
-                        moveInches(10,16);
-                        wrist.setPosition(0.3);
+                        moveInches(8,16);
+                        //wrist.setPosition(0.25);
                         sleep(500);
                         fingers.setPosition(0.4);
-                        moveInches(-40,16);
+                        moveInches(-42,16);
 
                         turn(0.35,-5,"left",0.33);
 
                         moveInches(-33.5,16);
-                        //turn(.35,-65,"right",.33);
+                        spinner(47.1238898038,10);
+
+                        turn(.35,-65,"right",.40);
                         //moveInches(-44,16);
 
-                        spinner(47.1238898038,10);
-                        //turn(0.35,-80,"right",0.33);
-                        //moveInches(120,20);
+                        //spinner(47.1238898038,80);
+                        turn(0.35,-80,"right",0.33);
+                        moveInches(120,20);
 
 
 
@@ -296,7 +298,7 @@ public class Redside extends LinearOpMode {
                     }
                 }
 
-            } else if (pipeline.getType1().toString().equals("REDSQUARE") || pipeline.getType2().toString().equals("REDSQUARE") || pipeline.getType3().toString().equals("REDSQUARE")) {
+            } else if (pipeline.getType1().toString().equals("BLUESQUARE") || pipeline.getType2().toString().equals("BLUESQUARE") || pipeline.getType3().toString().equals("BLUESQUARE")) {
                 //On Red Side
                 if (true) {
                     //Distance Sensor on Left < x
@@ -846,36 +848,37 @@ public class Redside extends LinearOpMode {
             Imgproc.rectangle(input, topLeft2, bottomRight2, BLUE, 2);
             Imgproc.rectangle(input, topLeft3, bottomRight3, BLUE, 2);
 
-            if (averageCb < 120 && averageCr < 150) {
-                type1 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb >= 120) {
-                type1 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr >= 150) {
+
+            if (((double)getAverageCb())/(double)getAverageCr() < 0.9547) {
                 type1 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if (((double)getAverageCb())/(double)getAverageCr() < 1.1234) {
+                type1 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if (((double)getAverageCb())/(double)getAverageCr() < 150) {
+                type1 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type1 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-            if (averageCb2 < 120 && averageCr2 < 150) {
-                type2 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb2 >= 120) {
-                type2 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr2 >= 150) {
+            if (((double)getAverageCb2())/(double)getAverageCr2() < 0.9547) {
                 type2 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if (((double)getAverageCb2())/(double)getAverageCr2() < 1.1234) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if ((((double)getAverageCb2())/(double)getAverageCr2()) < 150) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type2 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-
-            if (averageCb3 < 120 && averageCr3 < 150) {
-                type3 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb3 >= 120) {
-                type3 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr3 >= 150) {
+            if ((((double)getAverageCb3())/(double)getAverageCr3()) < 0.9547) {
                 type3 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if ((((double)getAverageCb3())/(double)getAverageCr3()) <1.1234) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if ((((double)getAverageCb3())/(double)getAverageCr3()) < 150) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type3 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
+
 
             return input;
         }

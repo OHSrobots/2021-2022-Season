@@ -160,7 +160,7 @@ public class FinalBlueStorage extends LinearOpMode {
 
                         fingers.setPosition(0.1);
                         wrist.setPosition(0.1);
-                        arm(4);
+                        arm(10);
                         //moveInches(36,16);
                         turn(0.35,-35,"right",0.33);
                         moveInches(27,16);
@@ -872,36 +872,36 @@ public class FinalBlueStorage extends LinearOpMode {
             Imgproc.rectangle(input, topLeft2, bottomRight2, BLUE, 2);
             Imgproc.rectangle(input, topLeft3, bottomRight3, BLUE, 2);
 
-            if (averageCb < 120 && averageCr < 150) {
-                type1 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb >= 120) {
-                type1 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr >= 150) {
+            if (((double)getAverageCb())/(double)getAverageCr() < 0.9547) {
                 type1 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if (((double)getAverageCb())/(double)getAverageCr() < 1.1234)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      {
+                type1 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if (((double)getAverageCb())/(double)getAverageCr() < 150) {
+                type1 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type1 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-            if (averageCb2 < 120 && averageCr2 < 150) {
-                type2 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb2 >= 120) {
-                type2 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr2 >= 150) {
+            if (((double)getAverageCb2())/(double)getAverageCr2() < 0.9547) {
                 type2 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if (((double)getAverageCb2())/(double)getAverageCr2() < 1.1234) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if ((((double)getAverageCb2())/(double)getAverageCr2()) < 150) {
+                type2 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type2 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
 
-
-            if (averageCb3 < 120 && averageCr3 < 150) {
-                type3 = OpenCVTest.SamplePipeline.TYPE.DUCK;
-            } else if (averageCb3 >= 120) {
-                type3 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
-            } else if (averageCr3 >= 150) {
+            if ((((double)getAverageCb3())/(double)getAverageCr3()) < 0.9547) {
                 type3 = OpenCVTest.SamplePipeline.TYPE.REDSQUARE;
+            } else if ((((double)getAverageCb3())/(double)getAverageCr3()) <1.1234) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.DUCK;
+            } else if ((((double)getAverageCb3())/(double)getAverageCr3()) < 150) {
+                type3 = OpenCVTest.SamplePipeline.TYPE.BLUESQUARE;
             } else {
                 type3 = OpenCVTest.SamplePipeline.TYPE.NULL;
             }
+
 
             return input;
         }
